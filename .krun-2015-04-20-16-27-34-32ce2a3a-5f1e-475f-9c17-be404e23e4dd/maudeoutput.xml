@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="US-ASCII" standalone="yes"?>
+<maudeml>
+ <result total-rewrites="0" real-time-ms="0" cpu-time-ms="0" rewrites-per-second="0">
+  <term op="setCounter" sort="#Int">
+   <term op="0" sort="#Zero"/>
+  </term>
+ </result>
