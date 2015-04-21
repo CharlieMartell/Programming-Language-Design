@@ -167,7 +167,7 @@ module LOLCODE
   // rule <k> X:Id R E:Exp => E ...<k>
 
 //---------------------PRINT LINE----------------------------
-  rule <k> VISIBILE V:Val, Es => Es; ...</k> <out>... .List => ListItem(V) </out>
+  rule <k> VISIBILE E:Exps => . ...</k> <out>... .List => ListItem(E) </out>
     [print]
   // rule VISIBILE .Vals; => .  [structural]
 //-----------------------------------------------------------
