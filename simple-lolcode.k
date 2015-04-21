@@ -3,9 +3,10 @@ module SIMPLE-LOLCODE-SYNTAX
 
   syntax Id ::= "main" [token]
 
-  syntax Decl ::= "I HAS A" Exps ";"
-                //| "I HAS A" Exps ";"
+  syntax Decl ::= IHASA Exps ";"
                 | "function" Id "(" Ids ")" Block
+
+  syntax IHASA ::= "I HAS A"
 
   syntax Exp ::= Int | Bool | String | Id
                | "(" Exp ")"             [bracket]
@@ -66,10 +67,10 @@ module SIMPLE-LOLCODE-SYNTAX
   rule if (E) S => if (E) S else {}                                 [macro]
   rule for(Start Cond; Step) {S} => {Start while (Cond) {S Step;}}  [macro]
   rule for(Start Cond; Step) {} => {Start while (Cond) {Step;}}     [macro]
-  rule I HAS A E1:Exp, E2:Exp, Es:Exps; => I HAS A E1; I HAS A E2, Es;          [macro]
+  rule IHA:IHASA E1:Exp, E2:Exp, Es:Exps; => IHA:IHASA E1; IHA:IHASA E2, Es;          [macro]
   rule HAI S:Stmts KTHXBAI => S                                     [macro]
-  rule I HAS A X:Id = E; => I HAS A X; X = E;                               [macro]
-  //rule I HAS A X:Id = E; => I HAS A X; X = E;                               [macro]
+  rule IHA:IHASA X:Id = E; => IHA:IHASA X; X = E;                               [macro]
+  //rule IHA:IHASA X:Id = E; => IHA:IHASA X; X = E;                               [macro]
 
 endmodule
 
@@ -86,7 +87,7 @@ module SIMPLE-LOLCODE
   configuration <T color="red">
                   <threads color="orange">
                     <thread multiplicity="*" color="yellow">
-                      <k color="green"> ($PGM:Start) </k>//~> execute) </k>
+                      <k color="green"> ($PGM:Stmts ~> execute) </k>
                       <br/>
                       <control color="cyan">
                         <fstack color="blue"> .List </fstack>
@@ -111,14 +112,14 @@ module SIMPLE-LOLCODE
 
   syntax KItem ::= "undefined"  [latex(\bot)]
 
-  rule <k> I HAS A X:Id; => . ...</k>
+  rule <k> IHA:IHASA X:Id; => . ...</k>
        <env> Env => Env[X <- L] </env>
        <store>... .Map => L |-> undefined ...</store>
        <nextLoc> L => L +Int 1 </nextLoc>
 
-  context I HAS A _:Id[HOLE];
+  context IHA:IHASA _:Id[HOLE];
 
-  rule <k> I HAS A X:Id[N:Int]; => . ...</k>
+  rule <k> IHA:IHASA X:Id[N:Int]; => . ...</k>
        <env> Env => Env[X <- L] </env>
        <store>... .Map => L |-> array(L +Int 1, N)
                           (L +Int 1) ... (L +Int N) |-> undefined ...</store>
@@ -126,11 +127,11 @@ module SIMPLE-LOLCODE
     when N >=Int 0
 
   syntax Id ::= "$1" | "$2"
-  rule I HAS A X:Id[N1:Int, N2:Int, Vs:Vals];
-    => I HAS A X[N1];
+  rule IHA:IHASA X:Id[N1:Int, N2:Int, Vs:Vals];
+    => IHA:IHASA X[N1];
        {
-         for(I HAS A $1 = 0; $1 <= N1 - 1; ++$1) {
-           I HAS A $2[N2, Vs];
+         for(IHA:IHASA $1 = 0; $1 <= N1 - 1; ++$1) {
+           IHA:IHASA $2[N2, Vs];
            X[$1] = $2;
          }
        }
@@ -240,50 +241,50 @@ module SIMPLE-LOLCODE
   rule <k> popx => . ...</k>
        <xstack> ListItem(_) => .List ...</xstack>
 
-  rule <k> throw V:Val; ~> _ => { I HAS A X = V; S2 } ~> K </k>
-       <control>
-         <xstack> ListItem((X, S2, K, Env, C)) => .List ...</xstack>
-         (_ => C)
-       </control>
-       <env> _ => Env </env>
+  // rule <k> throw V:Val; ~> _ => { ?IHA:IHASA X = V; S2 } ~> K </k>
+  //      <control>
+  //        <xstack> ListItem((X, S2, K, Env, C)) => .List ...</xstack>
+  //        (_ => C)
+  //      </control>
+  //      <env> _ => Env </env>
 
-  rule <thread>...
-         <k> spawn S => !T:Int ...</k>
-         <env> Env </env>
-       ...</thread>
-       (. => <thread>...
-               <k> S </k>
-               <env> Env </env>
-               <id> !T </id>
-             ...</thread>)
+  // rule <thread>...
+  //        <k> spawn S => !T:Int ...</k>
+  //        <env> Env </env>
+  //      ...</thread>
+  //      (. => <thread>...
+  //              <k> S </k>
+  //              <env> Env </env>
+  //              <id> !T </id>
+  //            ...</thread>)
 
-  rule (<thread>... <k>.</k> <holds>H</holds> <id>T</id> ...</thread> => .)
-       <busy> Busy => Busy -Set keys(H) </busy>
-       <terminated>... .Set => SetItem(T) ...</terminated>
+  // rule (<thread>... <k>.</k> <holds>H</holds> <id>T</id> ...</thread> => .)
+  //      <busy> Busy => Busy -Set keys(H) </busy>
+  //      <terminated>... .Set => SetItem(T) ...</terminated>
 
-  rule <k> join T:Int; => . ...</k>
-       <terminated>... SetItem(T) ...</terminated>
+  // rule <k> join T:Int; => . ...</k>
+  //      <terminated>... SetItem(T) ...</terminated>
 
-  rule <k> acquire V:Val; => . ...</k>
-       <holds>... .Map => V |-> 0 ...</holds>
-       <busy> Busy (.Set => SetItem(V)) </busy>
-    when (notBool(V in Busy))  [acquire]
+  // rule <k> acquire V:Val; => . ...</k>
+  //      <holds>... .Map => V |-> 0 ...</holds>
+  //      <busy> Busy (.Set => SetItem(V)) </busy>
+  //   when (notBool(V in Busy))  [acquire]
 
-  rule <k> acquire V; => . ...</k>
-       <holds>... V:Val |-> (N => N +Int 1) ...</holds>
+  // rule <k> acquire V; => . ...</k>
+  //      <holds>... V:Val |-> (N => N +Int 1) ...</holds>
 
-  rule <k> release V:Val; => . ...</k>
-       <holds>... V |-> (N => N -Int 1) ...</holds>
-    when N >Int 0
+  // rule <k> release V:Val; => . ...</k>
+  //      <holds>... V |-> (N => N -Int 1) ...</holds>
+  //   when N >Int 0
 
-  rule <k> release V; => . ...</k> <holds>... V:Val |-> 0 => .Map ...</holds>
-       <busy>... SetItem(V) => .Set ...</busy>
+  // rule <k> release V; => . ...</k> <holds>... V:Val |-> 0 => .Map ...</holds>
+  //      <busy>... SetItem(V) => .Set ...</busy>
 
-  rule <k> rendezvous V:Val; => . ...</k>
-       <k> rendezvous V; => . ...</k>  [rendezvous]
+  // rule <k> rendezvous V:Val; => . ...</k>
+  //      <k> rendezvous V; => . ...</k>  [rendezvous]
 
   syntax Stmts ::= mkDecls(Ids,Vals)  [function]
-  rule mkDecls((X:Id, Xs:Ids), (V:Val, Vs:Vals)) => I HAS A X=V; mkDecls(Xs,Vs)
+  rule mkDecls((X:Id, Xs:Ids), (V:Val, Vs:Vals)) => ?IHA:IHASA X=V; mkDecls(Xs,Vs)
   rule mkDecls(.Ids,.Vals) => {}
 
   syntax KItem ::= lookup(Int)

@@ -1,4 +1,4 @@
-// Program testing Collatz' conjecture up to a user-provided number.
+HAI
 
 function collatz(n) {
   I HAS A s=0;
@@ -17,3 +17,4 @@ function main() {
   for (I HAS A i=1; i<=m; ++i) { collatz(i); }
   print("Done.  It appears to hold.\n");
 }
+KTHXBAI

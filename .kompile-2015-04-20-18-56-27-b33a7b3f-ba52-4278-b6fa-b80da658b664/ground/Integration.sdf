@@ -4,8 +4,6 @@ imports Common
 imports KTechnique
 imports KBuiltinsBasic
 
-imports Variables
-
 exports
 
 context-free syntax
@@ -128,7 +126,7 @@ context-free priorities
     Exp "==" Exp -> Exp {non-assoc, cons("Exp1538Syn")}
     Exp "!=" Exp -> Exp {non-assoc, cons("Exp1497Syn")}
 } > {
-    ExclamationMarkDz Exp -> Exp {cons("Exp1285Syn")}
+    "!" Exp -> Exp {cons("Exp1285Syn")}
 } > { left:
     Exp "&&" Exp -> Exp {left, cons("Exp1248Syn")}
     Exp "||" Exp -> Exp {left, cons("Exp1208Syn")}
@@ -732,102 +730,30 @@ context-free syntax
     "rendezvous" InsertDzExp ";" -> Stmt {cons("Stmt1328Syn")}
     "#ioError" "(" InsertDzString ")" -> KItem {cons("KItem1329Syn")}
     "asinFloat" "(" InsertDzFloat ")" -> Float {cons("Float1330Syn")}
-    Set    -> InsertDzSet
-    Stmts    -> InsertDzStmts
-    MInt    -> InsertDzMInt
-    Bag    -> InsertDzBag
-    Bag    -> InsertDzBag
-    K    -> InsertDzK
-    String    -> InsertDzString
-    KList    -> InsertDzKList
-    Int    -> InsertDzInt
-    Stmt    -> InsertDzStmt
-    KLabel    -> InsertDzKLabel
-    Float    -> InsertDzFloat
-    Bool    -> InsertDzBool
-    Char    -> InsertDzChar
-    Exps    -> InsertDzExps
-    Block    -> InsertDzBlock
-    Ids    -> InsertDzIds
-    List    -> InsertDzList
-    Vals    -> InsertDzVals
-    Id    -> InsertDzId
-    TCPAnswer    -> InsertDzTCPAnswer
-    Exp    -> InsertDzExp
-    Map    -> InsertDzMap
-    KItem    -> InsertDzKItem
-
-
-    VARID  ":Nat"        -> NatDzVar            {cons("Nat12Var")}
-    VARID  ":Nat{" TagListDz "}"        -> NatDzVar            {cons("Nat12VarAttr")}
-    VARID  ":Val"        -> ValDzVar            {cons("Val12Var")}
-    VARID  ":Val{" TagListDz "}"        -> ValDzVar            {cons("Val12VarAttr")}
-    VARID  ":Set"        -> SetDzVar            {cons("Set12Var")}
-    VARID  ":Set{" TagListDz "}"        -> SetDzVar            {cons("Set12VarAttr")}
-    VARID  ":Variable"        -> VariableDzVar            {cons("Variable12Var")}
-    VARID  ":Variable{" TagListDz "}"        -> VariableDzVar            {cons("Variable12VarAttr")}
-    VARID  ":Stmts"        -> StmtsDzVar            {cons("Stmts12Var")}
-    VARID  ":Stmts{" TagListDz "}"        -> StmtsDzVar            {cons("Stmts12VarAttr")}
-    VARID  ":Start"        -> StartDzVar            {cons("Start12Var")}
-    VARID  ":Start{" TagListDz "}"        -> StartDzVar            {cons("Start12VarAttr")}
-    VARID  ":MInt"        -> MIntDzVar            {cons("MInt12Var")}
-    VARID  ":MInt{" TagListDz "}"        -> MIntDzVar            {cons("MInt12VarAttr")}
-    VARID  ":LowerCase"        -> LowerCaseDzVar            {cons("LowerCase12Var")}
-    VARID  ":LowerCase{" TagListDz "}"        -> LowerCaseDzVar            {cons("LowerCase12VarAttr")}
-    VARID  ":CamelCaseId"        -> CamelCaseIdDzVar            {cons("CamelCaseId12Var")}
-    VARID  ":CamelCaseId{" TagListDz "}"        -> CamelCaseIdDzVar            {cons("CamelCaseId12VarAttr")}
-    VARID  ":String"        -> StringDzVar            {cons("String12Var")}
-    VARID  ":String{" TagListDz "}"        -> StringDzVar            {cons("String12VarAttr")}
-    VARID  ":Int"        -> IntDzVar            {cons("Int12Var")}
-    VARID  ":Int{" TagListDz "}"        -> IntDzVar            {cons("Int12VarAttr")}
-    VARID  ":Stmt"        -> StmtDzVar            {cons("Stmt12Var")}
-    VARID  ":Stmt{" TagListDz "}"        -> StmtDzVar            {cons("Stmt12VarAttr")}
-    VARID  ":Bool"        -> BoolDzVar            {cons("Bool12Var")}
-    VARID  ":Bool{" TagListDz "}"        -> BoolDzVar            {cons("Bool12VarAttr")}
-    VARID  ":Char"        -> CharDzVar            {cons("Char12Var")}
-    VARID  ":Char{" TagListDz "}"        -> CharDzVar            {cons("Char12VarAttr")}
-    VARID  ":Ids"        -> IdsDzVar            {cons("Ids12Var")}
-    VARID  ":Ids{" TagListDz "}"        -> IdsDzVar            {cons("Ids12VarAttr")}
-    VARID  ":List"        -> ListDzVar            {cons("List12Var")}
-    VARID  ":List{" TagListDz "}"        -> ListDzVar            {cons("List12VarAttr")}
-    VARID  ":Stream"        -> StreamDzVar            {cons("Stream12Var")}
-    VARID  ":Stream{" TagListDz "}"        -> StreamDzVar            {cons("Stream12VarAttr")}
-    VARID  ":TCPAnswer"        -> TCPAnswerDzVar            {cons("TCPAnswer12Var")}
-    VARID  ":TCPAnswer{" TagListDz "}"        -> TCPAnswerDzVar            {cons("TCPAnswer12VarAttr")}
-    VARID  ":#Int"        -> DzIntDzVar            {cons("DzInt12Var")}
-    VARID  ":#Int{" TagListDz "}"        -> DzIntDzVar            {cons("DzInt12VarAttr")}
-    VARID  ":#String"        -> DzStringDzVar            {cons("DzString12Var")}
-    VARID  ":#String{" TagListDz "}"        -> DzStringDzVar            {cons("DzString12VarAttr")}
-    VARID  ":#Bool"        -> DzBoolDzVar            {cons("DzBool12Var")}
-    VARID  ":#Bool{" TagListDz "}"        -> DzBoolDzVar            {cons("DzBool12VarAttr")}
-    VARID  ":PascalCaseId"        -> PascalCaseIdDzVar            {cons("PascalCaseId12Var")}
-    VARID  ":PascalCaseId{" TagListDz "}"        -> PascalCaseIdDzVar            {cons("PascalCaseId12VarAttr")}
-    VARID  ":UpperCase"        -> UpperCaseDzVar            {cons("UpperCase12Var")}
-    VARID  ":UpperCase{" TagListDz "}"        -> UpperCaseDzVar            {cons("UpperCase12VarAttr")}
-    VARID  ":Decl"        -> DdeclDzVar            {cons("Ddecl12Var")}
-    VARID  ":Decl{" TagListDz "}"        -> DdeclDzVar            {cons("Ddecl12VarAttr")}
-    VARID  ":TCPError"        -> TCPErrorDzVar            {cons("TCPError12Var")}
-    VARID  ":TCPError{" TagListDz "}"        -> TCPErrorDzVar            {cons("TCPError12VarAttr")}
-    VARID  ":Float"        -> FloatDzVar            {cons("Float12Var")}
-    VARID  ":Float{" TagListDz "}"        -> FloatDzVar            {cons("Float12VarAttr")}
-    VARID  ":IOError"        -> IOErrorDzVar            {cons("IOError12Var")}
-    VARID  ":IOError{" TagListDz "}"        -> IOErrorDzVar            {cons("IOError12VarAttr")}
-    VARID  ":IHASA"        -> IHASADzVar            {cons("IHASA12Var")}
-    VARID  ":IHASA{" TagListDz "}"        -> IHASADzVar            {cons("IHASA12VarAttr")}
-    VARID  ":Exps"        -> ExpsDzVar            {cons("Exps12Var")}
-    VARID  ":Exps{" TagListDz "}"        -> ExpsDzVar            {cons("Exps12VarAttr")}
-    VARID  ":Block"        -> BlockDzVar            {cons("Block12Var")}
-    VARID  ":Block{" TagListDz "}"        -> BlockDzVar            {cons("Block12VarAttr")}
-    VARID  ":Vals"        -> ValsDzVar            {cons("Vals12Var")}
-    VARID  ":Vals{" TagListDz "}"        -> ValsDzVar            {cons("Vals12VarAttr")}
-    VARID  ":Id"        -> IdDzVar            {cons("Id12Var")}
-    VARID  ":Id{" TagListDz "}"        -> IdDzVar            {cons("Id12VarAttr")}
-    VARID  ":Exp"        -> ExpDzVar            {cons("Exp12Var")}
-    VARID  ":Exp{" TagListDz "}"        -> ExpDzVar            {cons("Exp12VarAttr")}
-    VARID  ":Map"        -> MapDzVar            {cons("Map12Var")}
-    VARID  ":Map{" TagListDz "}"        -> MapDzVar            {cons("Map12VarAttr")}
-    VARID  ":#Float"        -> DzFloatDzVar            {cons("DzFloat12Var")}
-    VARID  ":#Float{" TagListDz "}"        -> DzFloatDzVar            {cons("DzFloat12VarAttr")}
+    Set -> InsertDzSet
+    Stmts -> InsertDzStmts
+    MInt -> InsertDzMInt
+    Bag -> InsertDzBag
+    Bag -> InsertDzBag
+    K -> InsertDzK
+    String -> InsertDzString
+    KList -> InsertDzKList
+    Int -> InsertDzInt
+    Stmt -> InsertDzStmt
+    KLabel -> InsertDzKLabel
+    Float -> InsertDzFloat
+    Bool -> InsertDzBool
+    Char -> InsertDzChar
+    Exps -> InsertDzExps
+    Block -> InsertDzBlock
+    Ids -> InsertDzIds
+    List -> InsertDzList
+    Vals -> InsertDzVals
+    Id -> InsertDzId
+    TCPAnswer -> InsertDzTCPAnswer
+    Exp -> InsertDzExp
+    Map -> InsertDzMap
+    KItem -> InsertDzKItem
 
      K CastTypeDz "Nat"    -> VariableDz    {cons("Nat1Cast")}
      K CastTypeDz "Nat{" TagListDz "}"    -> VariableDz    {cons("Nat1CastAttr")}
@@ -899,6 +825,10 @@ context-free syntax
      K CastTypeDz "Map{" TagListDz "}"    -> VariableDz    {cons("Map1CastAttr")}
      K CastTypeDz "#Float"    -> VariableDz    {cons("DzFloat1Cast")}
      K CastTypeDz "#Float{" TagListDz "}"    -> VariableDz    {cons("DzFloat1CastAttr")}
+     K CastTypeDz "K"        -> VariableDz    {cons("K1Cast")}
+     K CastTypeDz "KItem"    -> VariableDz    {cons("KItem1Cast")}
+     K CastTypeDz "K{" TagListDz "}"        -> VariableDz    {cons("K1CastAttr")}
+     K CastTypeDz "KItem{" TagListDz "}"    -> VariableDz    {cons("KItem1CastAttr")}
      NatDzVar   -> Nat
      ValDzVar   -> Val
      SetDzVar   -> Set
@@ -934,10 +864,6 @@ context-free syntax
      ExpDzVar   -> Exp
      MapDzVar   -> Map
      DzFloatDzVar   -> DzFloat
-     K CastTypeDz "K"                         -> VariableDz    {cons("K1Cast")}
-     K CastTypeDz "KItem"                     -> VariableDz    {cons("KItem1Cast")}
-     K CastTypeDz "K{" TagListDz "}"        -> VariableDz    {cons("K1CastAttr")}
-     K CastTypeDz "KItem{" TagListDz "}"    -> VariableDz    {cons("KItem1CastAttr")}
 
     VariableDz -> K
 
@@ -950,43 +876,6 @@ context-free syntax
     DzDzFloat        -> DzFloat    {cons("DzFloat1Const")}
 
 
-context-free restrictions
-    NatDzVar -/- [a-zA-Z0-9]
-    ValDzVar -/- [a-zA-Z0-9]
-    SetDzVar -/- [a-zA-Z0-9]
-    VariableDzVar -/- [a-zA-Z0-9]
-    StmtsDzVar -/- [a-zA-Z0-9]
-    StartDzVar -/- [a-zA-Z0-9]
-    MIntDzVar -/- [a-zA-Z0-9]
-    LowerCaseDzVar -/- [a-zA-Z0-9]
-    CamelCaseIdDzVar -/- [a-zA-Z0-9]
-    StringDzVar -/- [a-zA-Z0-9]
-    IntDzVar -/- [a-zA-Z0-9]
-    StmtDzVar -/- [a-zA-Z0-9]
-    BoolDzVar -/- [a-zA-Z0-9]
-    CharDzVar -/- [a-zA-Z0-9]
-    IdsDzVar -/- [a-zA-Z0-9]
-    ListDzVar -/- [a-zA-Z0-9]
-    StreamDzVar -/- [a-zA-Z0-9]
-    TCPAnswerDzVar -/- [a-zA-Z0-9]
-    DzIntDzVar -/- [a-zA-Z0-9]
-    DzStringDzVar -/- [a-zA-Z0-9]
-    DzBoolDzVar -/- [a-zA-Z0-9]
-    PascalCaseIdDzVar -/- [a-zA-Z0-9]
-    UpperCaseDzVar -/- [a-zA-Z0-9]
-    DdeclDzVar -/- [a-zA-Z0-9]
-    TCPErrorDzVar -/- [a-zA-Z0-9]
-    FloatDzVar -/- [a-zA-Z0-9]
-    IOErrorDzVar -/- [a-zA-Z0-9]
-    IHASADzVar -/- [a-zA-Z0-9]
-    ExpsDzVar -/- [a-zA-Z0-9]
-    BlockDzVar -/- [a-zA-Z0-9]
-    ValsDzVar -/- [a-zA-Z0-9]
-    IdDzVar -/- [a-zA-Z0-9]
-    ExpDzVar -/- [a-zA-Z0-9]
-    MapDzVar -/- [a-zA-Z0-9]
-    DzFloatDzVar -/- [a-zA-Z0-9]
-    VariableDz -/- [a-zA-Z0-9]
 lexical syntax
     "Infinity" -> DzDzFloat
     "true" -> DzDzBool
@@ -1107,39 +996,6 @@ lexical syntax
 
 
 %% terminals reject
-    "K2String" -> VARID {reject}
-    "Int2Float" -> VARID {reject}
-    "String2Base" -> VARID {reject}
-    "Base2String" -> VARID {reject}
-    "KLabel2String" -> VARID {reject}
-    "Bag2String" -> VARID {reject}
-    "Infinity" -> VARID {reject}
-    "HAI" -> VARID {reject}
-    "SMTCall" -> VARID {reject}
-    "String2Bool" -> VARID {reject}
-    "String2K" -> VARID {reject}
-    "String2Bag" -> VARID {reject}
-    "NaN" -> VARID {reject}
-    "String2Int" -> VARID {reject}
-    "ListItem" -> VARID {reject}
-    "K2SMTLib" -> VARID {reject}
-    "Float2Int" -> VARID {reject}
-    "Float2String" -> VARID {reject}
-    "String2DotK" -> VARID {reject}
-    "String2Id" -> VARID {reject}
-    "K2Sort" -> VARID {reject}
-    "String2Float" -> VARID {reject}
-    "SMTLibQuery" -> VARID {reject}
-    "String2KLabel" -> VARID {reject}
-    "Vars2SMTLib" -> VARID {reject}
-    "Int2String" -> VARID {reject}
-    "Consts2SMTLib" -> VARID {reject}
-    "Char2String" -> VARID {reject}
-    "String2Char" -> VARID {reject}
-    "Id2String" -> VARID {reject}
-    "SetItem" -> VARID {reject}
-    "KTHXBAI" -> VARID {reject}
-
 lexical restrictions
     %% follow restrictions
     "==" -/- [I].[n].[t]
@@ -1213,6 +1069,43 @@ lexical restrictions
     "<=" -/- [F].[l].[o].[a].[t]
     "/" -/- [F].[l].[o].[a].[t]
     "=" -/- [M].[a].[p]
+context-free restrictions
+    NatDzVar -/- [a-zA-Z0-9\{]
+    ValDzVar -/- [a-zA-Z0-9\{]
+    SetDzVar -/- [a-zA-Z0-9\{]
+    VariableDzVar -/- [a-zA-Z0-9\{]
+    StmtsDzVar -/- [a-zA-Z0-9\{]
+    StartDzVar -/- [a-zA-Z0-9\{]
+    MIntDzVar -/- [a-zA-Z0-9\{]
+    LowerCaseDzVar -/- [a-zA-Z0-9\{]
+    CamelCaseIdDzVar -/- [a-zA-Z0-9\{]
+    StringDzVar -/- [a-zA-Z0-9\{]
+    IntDzVar -/- [a-zA-Z0-9\{]
+    StmtDzVar -/- [a-zA-Z0-9\{]
+    BoolDzVar -/- [a-zA-Z0-9\{]
+    CharDzVar -/- [a-zA-Z0-9\{]
+    IdsDzVar -/- [a-zA-Z0-9\{]
+    ListDzVar -/- [a-zA-Z0-9\{]
+    StreamDzVar -/- [a-zA-Z0-9\{]
+    TCPAnswerDzVar -/- [a-zA-Z0-9\{]
+    DzIntDzVar -/- [a-zA-Z0-9\{]
+    DzStringDzVar -/- [a-zA-Z0-9\{]
+    DzBoolDzVar -/- [a-zA-Z0-9\{]
+    PascalCaseIdDzVar -/- [a-zA-Z0-9\{]
+    UpperCaseDzVar -/- [a-zA-Z0-9\{]
+    DdeclDzVar -/- [a-zA-Z0-9\{]
+    TCPErrorDzVar -/- [a-zA-Z0-9\{]
+    FloatDzVar -/- [a-zA-Z0-9\{]
+    IOErrorDzVar -/- [a-zA-Z0-9\{]
+    IHASADzVar -/- [a-zA-Z0-9\{]
+    ExpsDzVar -/- [a-zA-Z0-9\{]
+    BlockDzVar -/- [a-zA-Z0-9\{]
+    ValsDzVar -/- [a-zA-Z0-9\{]
+    IdDzVar -/- [a-zA-Z0-9\{]
+    ExpDzVar -/- [a-zA-Z0-9\{]
+    MapDzVar -/- [a-zA-Z0-9\{]
+    DzFloatDzVar -/- [a-zA-Z0-9\{]
+    VariableDz -/- [a-zA-Z0-9\{]
 lexical restrictions
 %% some restrictions to ensure greedy matching for user defined constants
     "is" -/- [\#A-Z]
@@ -1225,8 +1118,215 @@ lexical syntax
     "NaN"([fFdD]|([pP][0-9]+[xX][0-9]+))? -> DzFloatDz
     "NaN" -> DzFloatDz {reject}
     "\"" ((~[\"\n\r\\]) | (((([\\][nrtf\"\\]) | ([\\][x][0-9a-fA-F][0-9a-fA-F])) | ([\\][u][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F])) | ([\\][U][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F])))* "\"" -> DzStringDz
+    [A-Za-z\_][A-Za-z0-9\_]* -> IdDz
+    "fpNaN" -> IdDz {reject}
+    "updateMap" -> IdDz {reject}
+    "directionalityChar" -> IdDz {reject}
+    "ugtMInt" -> IdDz {reject}
+    "usubMInt" -> IdDz {reject}
+    "ssubMInt" -> IdDz {reject}
+    "removeAll" -> IdDz {reject}
+    "K2String" -> IdDz {reject}
+    "lambda" -> IdDz {reject}
+    "trim" -> IdDz {reject}
+    "categoryChar" -> IdDz {reject}
+    "miMInt" -> IdDz {reject}
+    "isBinder" -> IdDz {reject}
+    "rendezvous" -> IdDz {reject}
+    "exponentBitsFloat" -> IdDz {reject}
+    "sltMInt" -> IdDz {reject}
+    "checkSat" -> IdDz {reject}
+    "ordChar" -> IdDz {reject}
+    "execute" -> IdDz {reject}
+    "Int2Float" -> IdDz {reject}
+    "andMInt" -> IdDz {reject}
+    "sinFloat" -> IdDz {reject}
+    "size" -> IdDz {reject}
+    "getKLabel" -> IdDz {reject}
+    "isSymbolicK" -> IdDz {reject}
+    "minFloat" -> IdDz {reject}
+    "tanFloat" -> IdDz {reject}
+    "isLocalFreshVar" -> IdDz {reject}
+    "subMInt" -> IdDz {reject}
+    "String2Base" -> IdDz {reject}
+    "Base2String" -> IdDz {reject}
+    "getVariables" -> IdDz {reject}
+    "replaceFirst" -> IdDz {reject}
+    "isBounding" -> IdDz {reject}
+    "acquire" -> IdDz {reject}
+    "KLabel2String" -> IdDz {reject}
+    "Bag2String" -> IdDz {reject}
+    "acosFloat" -> IdDz {reject}
+    "ugeMInt" -> IdDz {reject}
+    "xorBool" -> IdDz {reject}
+    "Infinity" -> IdDz {reject}
+    "maxInt" -> IdDz {reject}
+    "forall" -> IdDz {reject}
+    "undef" -> IdDz {reject}
+    "atanFloat" -> IdDz {reject}
+    "sminMInt" -> IdDz {reject}
+    "HAI" -> IdDz {reject}
+    "SMTCall" -> IdDz {reject}
+    "lvalue" -> IdDz {reject}
+    "popx" -> IdDz {reject}
+    "rootFloat" -> IdDz {reject}
+    "throw" -> IdDz {reject}
+    "String2Bool" -> IdDz {reject}
+    "sMaxMInt" -> IdDz {reject}
+    "isKResult" -> IdDz {reject}
+    "mkDecls" -> IdDz {reject}
+    "xorInt" -> IdDz {reject}
+    "notBool" -> IdDz {reject}
+    "roundFloat" -> IdDz {reject}
+    "isNaN" -> IdDz {reject}
+    "sgeMInt" -> IdDz {reject}
+    "String2K" -> IdDz {reject}
+    "ultMInt" -> IdDz {reject}
+    "lengthString" -> IdDz {reject}
+    "floorFloat" -> IdDz {reject}
+    "ltrim" -> IdDz {reject}
+    "isBuiltin" -> IdDz {reject}
+    "sqrtFloat" -> IdDz {reject}
+    "sgtMInt" -> IdDz {reject}
+    "overflowMInt" -> IdDz {reject}
+    "orBool" -> IdDz {reject}
+    "isSymbolicBag" -> IdDz {reject}
+    "ashrMInt" -> IdDz {reject}
+    "extractMInt" -> IdDz {reject}
+    "isCollection" -> IdDz {reject}
+    "for" -> IdDz {reject}
+    "precisionFloat" -> IdDz {reject}
+    "replaceAll" -> IdDz {reject}
+    "uminMInt" -> IdDz {reject}
+    "expFloat" -> IdDz {reject}
+    "rfindChar" -> IdDz {reject}
+    "String2Bag" -> IdDz {reject}
+    "NaN" -> IdDz {reject}
+    "intersectSet" -> IdDz {reject}
+    "minusInfinity" -> IdDz {reject}
+    "freshId" -> IdDz {reject}
+    "signFloat" -> IdDz {reject}
+    "negMInt" -> IdDz {reject}
+    "sleMInt" -> IdDz {reject}
+    "false" -> IdDz {reject}
+    "env" -> IdDz {reject}
+    "String2Int" -> IdDz {reject}
+    "print" -> IdDz {reject}
+    "isBound" -> IdDz {reject}
+    "ListItem" -> IdDz {reject}
+    "fresh" -> IdDz {reject}
+    "freshInt" -> IdDz {reject}
+    "lshrMInt" -> IdDz {reject}
+    "xorMInt" -> IdDz {reject}
+    "uaddMInt" -> IdDz {reject}
+    "concatenateMInt" -> IdDz {reject}
+    "sremMInt" -> IdDz {reject}
+    "K2SMTLib" -> IdDz {reject}
+    "addMInt" -> IdDz {reject}
+    "release" -> IdDz {reject}
+    "sMinMInt" -> IdDz {reject}
+    "rfindString" -> IdDz {reject}
+    "uremMInt" -> IdDz {reject}
+    "dummy" -> IdDz {reject}
+    "Float2Int" -> IdDz {reject}
+    "orMInt" -> IdDz {reject}
+    "findString" -> IdDz {reject}
+    "dividesInt" -> IdDz {reject}
+    "svalueMInt" -> IdDz {reject}
+    "else" -> IdDz {reject}
+    "catch" -> IdDz {reject}
+    "join" -> IdDz {reject}
+    "saddMInt" -> IdDz {reject}
+    "if" -> IdDz {reject}
+    "in" -> IdDz {reject}
+    "cosFloat" -> IdDz {reject}
+    "uleMInt" -> IdDz {reject}
+    "nothing" -> IdDz {reject}
+    "Float2String" -> IdDz {reject}
+    "isKLabelConstant" -> IdDz {reject}
+    "String2DotK" -> IdDz {reject}
+    "String2Id" -> IdDz {reject}
+    "divInt" -> IdDz {reject}
+    "absInt" -> IdDz {reject}
+    "bool2Int" -> IdDz {reject}
+    "loc" -> IdDz {reject}
+    "ceilFloat" -> IdDz {reject}
+    "chrChar" -> IdDz {reject}
+    "bitwidthMInt" -> IdDz {reject}
+    "sdivMInt" -> IdDz {reject}
+    "randomRandom" -> IdDz {reject}
+    "range" -> IdDz {reject}
+    "plusInfinity" -> IdDz {reject}
+    "undefined" -> IdDz {reject}
+    "mIntOfDigits" -> IdDz {reject}
+    "shlMInt" -> IdDz {reject}
+    "K2Sort" -> IdDz {reject}
+    "cool" -> IdDz {reject}
+    "freeVariables" -> IdDz {reject}
+    "significandFloat" -> IdDz {reject}
+    "String2Float" -> IdDz {reject}
+    "exists" -> IdDz {reject}
+    "impliesBool" -> IdDz {reject}
+    "choice" -> IdDz {reject}
+    "andThenBool" -> IdDz {reject}
+    "SMTLibQuery" -> IdDz {reject}
+    "return" -> IdDz {reject}
+    "asinFloat" -> IdDz {reject}
+    "smaxMInt" -> IdDz {reject}
+    "umaxMInt" -> IdDz {reject}
+    "sizeOf" -> IdDz {reject}
+    "replace" -> IdDz {reject}
+    "main" -> IdDz {reject}
+    "String2KLabel" -> IdDz {reject}
+    "while" -> IdDz {reject}
+    "isToken" -> IdDz {reject}
+    "substrString" -> IdDz {reject}
+    "Vars2SMTLib" -> IdDz {reject}
+    "uvalueMInt" -> IdDz {reject}
+    "function" -> IdDz {reject}
+    "mi" -> IdDz {reject}
+    "atan2Float" -> IdDz {reject}
+    "countAllOccurences" -> IdDz {reject}
+    "read" -> IdDz {reject}
+    "Int2String" -> IdDz {reject}
+    "absFloat" -> IdDz {reject}
+    "Consts2SMTLib" -> IdDz {reject}
+    "maxFloat" -> IdDz {reject}
+    "true" -> IdDz {reject}
+    "smulMInt" -> IdDz {reject}
+    "try" -> IdDz {reject}
+    "Char2String" -> IdDz {reject}
+    "eqMInt" -> IdDz {reject}
+    "umulMInt" -> IdDz {reject}
+    "String2Char" -> IdDz {reject}
+    "keys" -> IdDz {reject}
+    "modInt" -> IdDz {reject}
+    "minInt" -> IdDz {reject}
+    "values" -> IdDz {reject}
+    "orElseBool" -> IdDz {reject}
+    "findChar" -> IdDz {reject}
+    "array" -> IdDz {reject}
+    "logFloat" -> IdDz {reject}
+    "uoverflowMInt" -> IdDz {reject}
+    "lookup" -> IdDz {reject}
+    "mulMInt" -> IdDz {reject}
+    "Id2String" -> IdDz {reject}
+    "soverflowMInt" -> IdDz {reject}
+    "exponentFloat" -> IdDz {reject}
+    "zeroMInt" -> IdDz {reject}
+    "rtrim" -> IdDz {reject}
+    "digitsOfMInt" -> IdDz {reject}
+    "inKList" -> IdDz {reject}
+    "SetItem" -> IdDz {reject}
+    "neMInt" -> IdDz {reject}
+    "andBool" -> IdDz {reject}
+    "spawn" -> IdDz {reject}
+    "udivMInt" -> IdDz {reject}
+    "isVariable" -> IdDz {reject}
+    "KTHXBAI" -> IdDz {reject}
 context-free syntax
     DzStringDz -> DzString {cons("DzString1Const")}
+    IdDz -> Id {cons("Id1Const")}
     DzIntDz -> DzInt {cons("DzInt1Const")}
     DzFloatDz -> DzFloat {cons("DzFloat1Const")}
 
@@ -1234,3 +1334,4 @@ context-free syntax
 context-free restrictions
     "#" -/- [s].[y].[m]
     DzInt -/-  [0-9]
+    Id -/- [A-Za-z0-9\_]

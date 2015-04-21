@@ -1,0 +1,8 @@
+load "/Users/mac/k/lib/maude/lib/k-prelude"
+load "base.maude"
+load "builtins.maude"
+mod SIMPLE-LOLCODE is 
+  including SIMPLE-LOLCODE-BASE .
+  including SIMPLE-LOLCODE-BUILTINS .
+eq mainModule = 'SIMPLE-LOLCODE .
+endm
