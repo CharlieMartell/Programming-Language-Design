@@ -1,5 +1,0 @@
-set show command off .
-red setCounter(0) .
-erewrite <_>_</_>(generatedTop, <_>_</_>(T, (<_>_</_>(k, _`(_`)('HAI_KTHXBAI, _`(_`)('_;`), _`(_`)('IHASA_ITZ_, _`,`,_(_`(_`)(#token("Label", "mine"), .KList), _`(_`)(#_(5), .KList))))), k)) (<_>_</_>(in, _`(_`)(List2KLabel_(__(.List, ListItem(_`(_`)('#buffer, _`(_`)(#_(""), .KList))), ListItem(_`(_`)('#istream, _`(_`)(#_(0), .KList))))), .KList), in)) (<_>_</_>(out, _`(_`)(List2KLabel_(__(.List, ListItem(_`(_`)('#ostream, _`(_`)(#_(1), .KList))), ListItem(_`(_`)('#buffer, _`(_`)(#_(""), .KList))))), .KList), out)) (<_>_</_>(nextLoc, _`(_`)(#_(0), .KList), nextLoc)) , T), generatedTop) .
-
-red counter .
