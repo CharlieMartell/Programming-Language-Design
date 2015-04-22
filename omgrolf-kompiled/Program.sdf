@@ -1,0 +1,86 @@
+module Program
+
+imports Common
+imports KBuiltinsBasic
+exports
+
+context-free syntax
+context-free start-symbols
+DzString DzBool Float Stmts Bool Id String DzInt Int DzFloat Stmt K
+context-free syntax
+    DzString -> String {}
+    Stmts Stmts -> Stmts {cons("Stmts1238Syn")}
+    DzFloat -> Float {}
+    DzBool -> Bool {}
+    DzInt -> Int {}
+    "rofl" InsertDzId "!" -> Stmt {cons("Stmt1468Syn")}
+    Id "iz" InsertDzInt "!" -> Stmt {cons("Stmt167Syn")}
+    Stmt -> Stmts {}
+    Id -> InsertDzId
+    Int -> InsertDzInt
+
+
+    DzDzString        -> DzString    {cons("DzString1Const")}
+    DzDzBool        -> DzBool    {cons("DzBool1Const")}
+    DzDzInt        -> DzInt    {cons("DzInt1Const")}
+    DzDzId        -> DzId    {cons("DzId1Const")}
+    DzDzFloat        -> DzFloat    {cons("DzFloat1Const")}
+
+
+
+%% start symbols subsorts
+    KItem        -> K
+    DzString        -> K
+    DzBool        -> K
+    Float        -> K
+    Stmts        -> K
+    Bool        -> K
+    Id        -> K
+    String        -> K
+    DzInt        -> K
+    Int        -> K
+    DzFloat        -> K
+    Stmt        -> K
+lexical syntax
+    "Infinity" -> DzDzFloat
+    "true" -> DzDzBool
+    "false" -> DzDzBool
+    "NaN" -> DzDzFloat
+
+
+    "iz" -> IdDz {reject}
+    "Infinity" -> IdDz {reject}
+    "rofl" -> IdDz {reject}
+    "true" -> IdDz {reject}
+    "false" -> IdDz {reject}
+    "NaN" -> IdDz {reject}
+
+lexical restrictions
+    %% follow restrictions
+
+
+lexical syntax
+    [A-Za-z\_][A-Za-z0-9\_]* -> IdDz
+    "iz" -> IdDz {reject}
+    "Infinity" -> IdDz {reject}
+    "rofl" -> IdDz {reject}
+    "true" -> IdDz {reject}
+    "false" -> IdDz {reject}
+    "NaN" -> IdDz {reject}
+    [\-\+]? [0-9]+ -> DzIntDz
+    [\+\-]?[0-9]+"."[0-9]+([eE][\+\-]?[0-9]+)?([fFdD]|([pP][0-9]+[xX][0-9]+))? -> DzFloatDz
+    [\+\-]?"Infinity"([fFdD]|([pP][0-9]+[xX][0-9]+))? -> DzFloatDz
+    "Infinity" -> DzFloatDz {reject}
+    "NaN"([fFdD]|([pP][0-9]+[xX][0-9]+))? -> DzFloatDz
+    "NaN" -> DzFloatDz {reject}
+    "\"" ((~[\"\n\r\\]) | (((([\\][nrtf\"\\]) | ([\\][x][0-9a-fA-F][0-9a-fA-F])) | ([\\][u][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F])) | ([\\][U][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F])))* "\"" -> DzStringDz
+context-free syntax
+    DzStringDz -> DzString {cons("DzString1Const")}
+    IdDz -> Id {cons("Id1Const")}
+    DzIntDz -> DzInt {cons("DzInt1Const")}
+    DzFloatDz -> DzFloat {cons("DzFloat1Const")}
+
+
+context-free restrictions
+    Id -/- [A-Za-z0-9\_]
+    DzInt -/-  [0-9]
