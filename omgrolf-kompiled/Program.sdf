@@ -9,12 +9,12 @@ context-free start-symbols
 DzString DzBool Float Stmts Bool Id String DzInt Int DzFloat Stmt K
 context-free syntax
     DzString -> String {}
-    Stmts Stmts -> Stmts {cons("Stmts1238Syn")}
+    Stmts Stmts -> Stmts {cons("Stmts1239Syn")}
     DzFloat -> Float {}
     DzBool -> Bool {}
     DzInt -> Int {}
-    "rofl" InsertDzId "!" -> Stmt {cons("Stmt1468Syn")}
-    Id "iz" InsertDzInt "!" -> Stmt {cons("Stmt167Syn")}
+    "rofl" InsertDzId "!" -> Stmt {cons("Stmt1470Syn")}
+    Id "iz" InsertDzInt "!" -> Stmt {cons("Stmt168Syn")}
     Stmt -> Stmts {}
     Id -> InsertDzId
     Int -> InsertDzInt

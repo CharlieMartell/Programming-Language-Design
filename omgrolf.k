@@ -39,12 +39,12 @@ stfu
 module OMGROFL-SYNTAX
   //imports BUILTIN-SYNTAX-HOOKS
 
-  syntax Stmt ::= Id "iz" Int "!"                 
-               | "rofl" Id "!"
+ syntax Stmt ::= Id "iz" Int "!"
+               // | "stfu !"                    [token]
+               | "rofl" Id "!"                  
 
-  syntax Stmts ::= Stmt 
-                 | Stmts Stmts 
-
+ syntax Stmts ::= Stmt 
+                | Stmts Stmts 
 
 endmodule
 
@@ -52,7 +52,7 @@ module OMGROFL
   imports OMGROFL-SYNTAX
 
 configuration <T>
-              <k> $PGM:Stmts </k>
+                <k> $PGM:Stmts </k>
                 <state color="red"> .Map </state>
                 <in stream="stdin"> .List </in>
                 <out stream="stdout"> .List </out>
@@ -62,16 +62,24 @@ configuration <T>
   The assigned variable is updated in the state.  The variable is expected
   to be declared, otherwise the semantics will get stuck.  At the same time,
  //  the assignment is dissolved. */
- // rule <k> X:Id iz I:Int ! => . ...</k>
- // <state> Rho:Map (.Map => X |-> 0) </state>
- //    when notBool (X in keys(Rho))
 
- rule <k> X:Id iz I:Int! => . ...</k>
+ //------------Semantics for defining new variables and adds them to state--------------
+ syntax KItem ::= addId(Id)
+
+ rule <k> addId(X:Id) => . ...</k>
+ <state>... (.Map => X|->0) ...</state>
+
+ syntax KItem ::= addIdValue(Id, Int)
+
+ rule <k> addIdValue(X:Id, I:Int) => . ...</k>
  <state>... X |-> (_ => I) ...</state>
+
+ rule <k> X:Id iz I:Int! => addId(X) ~> addIdValue(X, I) ...</k>
+ //---------------------------------------------------------------------------------------
 
  rule <k> rofl X:Id! => . ...</k>
  <state>... X |-> I ...</state>
- // <out> .List => ListItem(chrChar(I)) </out>
+ <out> .List => ListItem(chrChar(I)) </out>
 
  // rule <k> int (X,Xs => Xs);_ </k> <state> Rho:Map (.Map => X|->0) </state>
  //    when notBool (X in keys(Rho))
