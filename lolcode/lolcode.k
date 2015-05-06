@@ -1,4 +1,6 @@
 require "modules/pattern-matching.k"
+require "modules/unification.k"
+
 /*!
 \title{LOLCODE }
 \author{Charlie Martell}

@@ -5,19 +5,54 @@ imports KBuiltinsBasic
 exports
 
 context-free syntax
+context-free priorities
+{
+    Int -> AExp {}
+    Id -> AExp {}
+    AExp "/" AExp -> AExp {left, cons("AExp1388Syn")}
+} > {
+    AExp "+" AExp -> AExp {left, cons("AExp147Syn")}
+}
+
+context-free priorities
+{
+    Bool -> BExp {}
+    AExp "<=" AExp -> BExp {cons("BExp1385Syn")}
+    "!" BExp -> BExp {cons("BExp196Syn")}
+} > {
+    BExp "&&" BExp -> BExp {left, cons("BExp1327Syn")}
+}
+
+context-free priorities
+{
+    Block -> Stmt {}
+    Id "iz" InsertDzAExp "!" -> Stmt {cons("Stmt1350Syn")}
+    "if" "(" InsertDzBExp ")" InsertDzBlock "else" Block -> Stmt {cons("Stmt1386Syn")}
+    "while" "(" InsertDzBExp ")" Block -> Stmt {cons("Stmt1340Syn")}
+} > {
+    Stmt Stmt -> Stmt {left, cons("Stmt1242Syn")}
+}
+
 context-free start-symbols
-DzString DzBool Float Stmts Bool Id String DzInt Int DzFloat Stmt K
+DzString DzBool AExp BExp String Int Stmt Float Bool Pgm Block Ids Id DzInt DzFloat K
 context-free syntax
     DzString -> String {}
-    Stmts Stmts -> Stmts {cons("Stmts1239Syn")}
     DzFloat -> Float {}
     DzBool -> Bool {}
+    "(" InsertDzAExp ")" -> AExp {cons("AExp1Bracket")}
+    "int" InsertDzIds ";" Stmt -> Pgm {cons("Pgm164Syn")}
     DzInt -> Int {}
-    "rofl" InsertDzId "!" -> Stmt {cons("Stmt1470Syn")}
-    Id "iz" InsertDzInt "!" -> Stmt {cons("Stmt168Syn")}
-    Stmt -> Stmts {}
+    "{" InsertDzStmt "}" -> Block {cons("Block158Syn")}
+    "{" "}" -> Block {cons("Block1374Syn")}
+    {Id ","}* -> Ids {cons("Ids1ListSyn")}
+    "rofl" InsertDzId "!" -> Stmt {cons("Stmt1365Syn")}
+    "(" InsertDzBExp ")" -> BExp {cons("BExp1Bracket")}
+    AExp -> InsertDzAExp
+    BExp -> InsertDzBExp
+    Block -> InsertDzBlock
+    Ids -> InsertDzIds
     Id -> InsertDzId
-    Int -> InsertDzInt
+    Stmt -> InsertDzStmt
 
 
     DzDzString        -> DzString    {cons("DzString1Const")}
@@ -32,15 +67,18 @@ context-free syntax
     KItem        -> K
     DzString        -> K
     DzBool        -> K
-    Float        -> K
-    Stmts        -> K
-    Bool        -> K
-    Id        -> K
+    AExp        -> K
+    BExp        -> K
     String        -> K
-    DzInt        -> K
     Int        -> K
-    DzFloat        -> K
     Stmt        -> K
+    Float        -> K
+    Bool        -> K
+    Pgm        -> K
+    Block        -> K
+    Id        -> K
+    DzInt        -> K
+    DzFloat        -> K
 lexical syntax
     "Infinity" -> DzDzFloat
     "true" -> DzDzBool
@@ -48,12 +86,16 @@ lexical syntax
     "NaN" -> DzDzFloat
 
 
-    "iz" -> IdDz {reject}
     "Infinity" -> IdDz {reject}
+    "false" -> IdDz {reject}
+    "while" -> IdDz {reject}
+    "int" -> IdDz {reject}
+    "iz" -> IdDz {reject}
+    "else" -> IdDz {reject}
     "rofl" -> IdDz {reject}
     "true" -> IdDz {reject}
-    "false" -> IdDz {reject}
     "NaN" -> IdDz {reject}
+    "if" -> IdDz {reject}
 
 lexical restrictions
     %% follow restrictions
@@ -61,12 +103,16 @@ lexical restrictions
 
 lexical syntax
     [A-Za-z\_][A-Za-z0-9\_]* -> IdDz
-    "iz" -> IdDz {reject}
     "Infinity" -> IdDz {reject}
+    "false" -> IdDz {reject}
+    "while" -> IdDz {reject}
+    "int" -> IdDz {reject}
+    "iz" -> IdDz {reject}
+    "else" -> IdDz {reject}
     "rofl" -> IdDz {reject}
     "true" -> IdDz {reject}
-    "false" -> IdDz {reject}
     "NaN" -> IdDz {reject}
+    "if" -> IdDz {reject}
     [\-\+]? [0-9]+ -> DzIntDz
     [\+\-]?[0-9]+"."[0-9]+([eE][\+\-]?[0-9]+)?([fFdD]|([pP][0-9]+[xX][0-9]+))? -> DzFloatDz
     [\+\-]?"Infinity"([fFdD]|([pP][0-9]+[xX][0-9]+))? -> DzFloatDz
