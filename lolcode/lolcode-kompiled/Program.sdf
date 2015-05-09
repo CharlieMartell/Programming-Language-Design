@@ -5,34 +5,88 @@ imports KBuiltinsBasic
 exports
 
 context-free syntax
+context-free priorities
+{
+    Int -> Exp {}
+    Bool -> Exp {}
+    String -> Exp {}
+    Id -> Exp {}
+    "++" Exp -> Exp {cons("Exp162Syn")}
+} > {
+    Exp "[" InsertDzExps "]" -> Exp {cons("Exp1257Syn")}
+} > {
+    Exp "(" InsertDzExps ")" -> Exp {cons("Exp1304Syn")}
+    "-" Exp -> Exp {cons("Exp1365Syn")}
+} > { left:
+    Exp "*" Exp -> Exp {left, cons("Exp1368Syn")}
+    Exp "/" Exp -> Exp {left, cons("Exp1392Syn")}
+    Exp "%" Exp -> Exp {left, cons("Exp1250Syn")}
+} > { left:
+    Exp "+" Exp -> Exp {left, cons("Exp1353Syn")}
+    Exp "-" Exp -> Exp {left, cons("Exp1329Syn")}
+} > { non-assoc:
+    Exp "<" Exp -> Exp {non-assoc, cons("Exp140Syn")}
+    Exp "<=" Exp -> Exp {non-assoc, cons("Exp1363Syn")}
+    Exp ">" Exp -> Exp {non-assoc, cons("Exp1256Syn")}
+    Exp ">=" Exp -> Exp {non-assoc, cons("Exp136Syn")}
+    Exp "==" Exp -> Exp {non-assoc, cons("Exp1387Syn")}
+    Exp "!=" Exp -> Exp {non-assoc, cons("Exp1345Syn")}
+} > {
+    "!" Exp -> Exp {cons("Exp1406Syn")}
+} > { left:
+    Exp "&&" Exp -> Exp {left, cons("Exp1346Syn")}
+    Exp "||" Exp -> Exp {left, cons("Exp1272Syn")}
+} > {
+    "spawn" Block -> Exp {cons("Exp1425Syn")}
+} > {
+    Exp "R" Exp -> Exp {right, cons("Exp142Syn")}
+}
+
 context-free start-symbols
-DzString DzBool Statement CodeBlock String Int Assignment Float Bool Exps ProgramStart Value Id Ddeclaration PrintBlock Exp DzInt InputBlock DzFloat K
+DzString DzBool Stmts Ddecl String Int Stmt Float Bool Pgm Exps Ids Block Id Exp DzInt DzFloat K
 context-free syntax
-    "HAI" InsertDzCodeBlock "KTHXBAI" -> ProgramStart {cons("ProgramStart1245Syn")}
-    Statement CodeBlock -> CodeBlock {cons("CodeBlock1356Syn")}
-    InputBlock "!" -> Statement {cons("Statement1295Syn")}
+    "if" "(" InsertDzExp ")" InsertDzBlock "else" Block -> Stmt {cons("Stmt1336Syn")}
+    "read" "(" ")" -> Exp {cons("Exp155Syn")}
     DzString -> String {}
-    DzBool -> Bool {}
-    PrintBlock "!" -> Statement {cons("Statement1236Syn")}
-    Statement -> CodeBlock {}
-    "I HAS A" InsertDzId "ITZ" Exp -> Ddeclaration {cons("Ddeclaration1329Syn")}
+    "rendezvous" InsertDzExp "!" -> Stmt {cons("Stmt156Syn")}
+    "return" "!" -> Stmt {cons("Stmt1279Syn")}
+    "for" "(" InsertDzStmts InsertDzExp "!" InsertDzExp ")" Block -> Stmt {cons("Stmt197Syn")}
     DzInt -> Int {}
-    Statement Statement -> Statement {left, cons("Statement15Syn")}
-    Assignment "!" -> Statement {cons("Statement183Syn")}
-    "GIMMEH" String -> InputBlock {cons("InputBlock150Syn")}
-    String -> Value {}
-    {Exp ","}* -> Exps {cons("Exps1ListSyn")}
-    "VISIBLE" InsertDzExps "MKAY?" -> PrintBlock {cons("PrintBlock1302Syn")}
-    Ddeclaration "!" -> Statement {cons("Statement1240Syn")}
+    {Id ","}* -> Ids {cons("Ids1ListSyn")}
+    "try" InsertDzBlock "catch" "(" InsertDzId ")" Block -> Stmt {cons("Stmt16Syn")}
+    "return" InsertDzExp "!" -> Stmt {cons("Stmt1342Syn")}
+    Stmt -> Stmts {}
+    "main" -> Id {cons("Id1287Syn")}
+    "I HAS A" InsertDzExp "!" -> Ddecl {cons("Ddecl163Syn")}
+    "acquire" InsertDzExp "!" -> Stmt {cons("Stmt1393Syn")}
     DzFloat -> Float {}
-    Int -> Value {}
-    Id "R" Exp -> Assignment {cons("Assignment186Syn")}
-    Value -> Exp {}
-    "I HAS A" Id -> Ddeclaration {cons("Ddeclaration1322Syn")}
-    Bool -> Value {}
+    "ihasa" InsertDzExp "ITZ" InsertDzExp "!" -> Ddecl {cons("Ddecl1288Syn")}
+    "sizeOf" "(" InsertDzExp ")" -> Exp {cons("Exp167Syn")}
+    Exp "!" -> Stmt {cons("Stmt1348Syn")}
+    "ihasa" InsertDzExp "!" -> Ddecl {cons("Ddecl1290Syn")}
+    "join" InsertDzExp "!" -> Stmt {cons("Stmt1434Syn")}
+    Ddecl -> Stmt {}
+    "{" "}" -> Block {cons("Block1438Syn")}
+    "I HAS A" InsertDzExp "ITZ" InsertDzExp "!" -> Ddecl {cons("Ddecl1300Syn")}
+    Stmts Stmts -> Stmts {right, cons("Stmts1220Syn")}
+    DzBool -> Bool {}
+    "HAI" InsertDzStmts "KTHXBAI" -> Pgm {cons("Pgm1397Syn")}
+    "{" InsertDzStmts "}" -> Block {cons("Block1399Syn")}
+    "(" InsertDzExp ")" -> Exp {cons("Exp1Bracket")}
+    "throw" InsertDzExp "!" -> Stmt {cons("Stmt177Syn")}
+    Block -> Stmt {}
+    "while" "(" InsertDzExp ")" Block -> Stmt {cons("Stmt178Syn")}
+    "release" InsertDzExp "!" -> Stmt {cons("Stmt1447Syn")}
+    {Exp ","}* -> Exps {cons("Exps1ListSyn")}
+    "function" InsertDzId "(" InsertDzIds ")" Block -> Ddecl {cons("Ddecl190Syn")}
+    "print" "(" InsertDzExps ")" "!" -> Stmt {cons("Stmt153Syn")}
+    "if" "(" InsertDzExp ")" Block -> Stmt {cons("Stmt1377Syn")}
+    Stmts -> InsertDzStmts
     Exps -> InsertDzExps
-    CodeBlock -> InsertDzCodeBlock
+    Block -> InsertDzBlock
+    Ids -> InsertDzIds
     Id -> InsertDzId
+    Exp -> InsertDzExp
 
 
     DzDzString        -> DzString    {cons("DzString1Const")}
@@ -47,21 +101,18 @@ context-free syntax
     KItem        -> K
     DzString        -> K
     DzBool        -> K
-    Statement        -> K
-    CodeBlock        -> K
+    Stmts        -> K
+    Ddecl        -> K
     String        -> K
     Int        -> K
-    Assignment        -> K
+    Stmt        -> K
     Float        -> K
     Bool        -> K
-    ProgramStart        -> K
-    Value        -> K
+    Pgm        -> K
+    Block        -> K
     Id        -> K
-    Ddeclaration        -> K
-    PrintBlock        -> K
     Exp        -> K
     DzInt        -> K
-    InputBlock        -> K
     DzFloat        -> K
 lexical syntax
     "Infinity" -> DzDzFloat
@@ -70,16 +121,33 @@ lexical syntax
     "NaN" -> DzDzFloat
 
 
+    "sizeOf" -> IdDz {reject}
+    "release" -> IdDz {reject}
+    "ihasa" -> IdDz {reject}
+    "main" -> IdDz {reject}
+    "while" -> IdDz {reject}
+    "ITZ" -> IdDz {reject}
+    "else" -> IdDz {reject}
+    "function" -> IdDz {reject}
+    "rendezvous" -> IdDz {reject}
+    "catch" -> IdDz {reject}
+    "join" -> IdDz {reject}
+    "if" -> IdDz {reject}
+    "read" -> IdDz {reject}
+    "true" -> IdDz {reject}
+    "try" -> IdDz {reject}
+    "for" -> IdDz {reject}
+    "acquire" -> IdDz {reject}
+    "R" -> IdDz {reject}
+    "NaN" -> IdDz {reject}
     "Infinity" -> IdDz {reject}
     "false" -> IdDz {reject}
-    "ITZ" -> IdDz {reject}
-    "VISIBLE" -> IdDz {reject}
     "HAI" -> IdDz {reject}
-    "R" -> IdDz {reject}
-    "GIMMEH" -> IdDz {reject}
-    "true" -> IdDz {reject}
-    "NaN" -> IdDz {reject}
+    "print" -> IdDz {reject}
+    "spawn" -> IdDz {reject}
+    "throw" -> IdDz {reject}
     "KTHXBAI" -> IdDz {reject}
+    "return" -> IdDz {reject}
 
 lexical restrictions
     %% follow restrictions
@@ -87,16 +155,33 @@ lexical restrictions
 
 lexical syntax
     [A-Za-z\_][A-Za-z0-9\_]* -> IdDz
+    "sizeOf" -> IdDz {reject}
+    "release" -> IdDz {reject}
+    "ihasa" -> IdDz {reject}
+    "main" -> IdDz {reject}
+    "while" -> IdDz {reject}
+    "ITZ" -> IdDz {reject}
+    "else" -> IdDz {reject}
+    "function" -> IdDz {reject}
+    "rendezvous" -> IdDz {reject}
+    "catch" -> IdDz {reject}
+    "join" -> IdDz {reject}
+    "if" -> IdDz {reject}
+    "read" -> IdDz {reject}
+    "true" -> IdDz {reject}
+    "try" -> IdDz {reject}
+    "for" -> IdDz {reject}
+    "acquire" -> IdDz {reject}
+    "R" -> IdDz {reject}
+    "NaN" -> IdDz {reject}
     "Infinity" -> IdDz {reject}
     "false" -> IdDz {reject}
-    "ITZ" -> IdDz {reject}
-    "VISIBLE" -> IdDz {reject}
     "HAI" -> IdDz {reject}
-    "R" -> IdDz {reject}
-    "GIMMEH" -> IdDz {reject}
-    "true" -> IdDz {reject}
-    "NaN" -> IdDz {reject}
+    "print" -> IdDz {reject}
+    "spawn" -> IdDz {reject}
+    "throw" -> IdDz {reject}
     "KTHXBAI" -> IdDz {reject}
+    "return" -> IdDz {reject}
     [\-\+]? [0-9]+ -> DzIntDz
     [\+\-]?[0-9]+"."[0-9]+([eE][\+\-]?[0-9]+)?([fFdD]|([pP][0-9]+[xX][0-9]+))? -> DzFloatDz
     [\+\-]?"Infinity"([fFdD]|([pP][0-9]+[xX][0-9]+))? -> DzFloatDz
