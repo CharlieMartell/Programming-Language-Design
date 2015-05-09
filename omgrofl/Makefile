@@ -1,5 +1,5 @@
 PROJ = omgrofl
-TEST = easy.omgrofl
+TEST = test.omgrofl
 KOMPILE-FLAGS = ""
 KRUN-FLAGS = ""
 all: run
