@@ -38,25 +38,22 @@ This section defines the syntax of LOLCODE.*/
  syntax CodeBlock     ::=  Statement 
                         |  Statement CodeBlock
   
- syntax Statement     ::= Statement Statement 
-                        | Declaration ";"
+ syntax Statement     ::= Statement Statement [left]
+                        | Declaration "!"
                         //| Loop 
-                        // | Comment ";)"
-                        | PrintBlock  ";"
-                        // | IfBlock ";)"
-                        | InputBlock ";"
-                        // | FuncDecl ";)"
-                        // | Assignment ";)"
-                        // | Exp ";)"
+                        // | Comment "!"
+                        | PrintBlock  "!"
+                        // | IfBlock "!"
+                        | InputBlock "!"
+                        // | FuncDecl "!"
+                        | Assignment "!"
+                        // | Exp "!"
   
- // syntax Loop          ::= "IM IN YR" Label "WILE" Exp CodeBlock
- //                        | "IM OUTTA YR" Label
+ // syntax Loop          ::= "IM IN YR" Id "WILE" Exp CodeBlock
+ //                        | "IM OUTTA YR" Id
   
- syntax Declaration   ::= "I HAS A" Label
-                        // | "I HAS A" Label "ITZ" Value
-
-
- syntax Label         ::= Token{[a-z][\_a-zA-Z0-9]*}       [notInRules, autoReject, token, regex("[a-z][\\_a-zA-Z0-9]*")]
+ syntax Declaration   ::= "I HAS A" Id
+                        | "I HAS A" Id "ITZ" Exp 
 
  syntax Value         ::= Int
                         | Bool
@@ -77,11 +74,11 @@ This section defines the syntax of LOLCODE.*/
  syntax InputBlock    ::= "GIMMEH" String 
 
 // //No Param, One Param, Two Param
-//  syntax FuncDecl      ::= "HOW DUZ I" Label CodeBlock "IF U SAY SO"
-//                         | "HOW DUZ I" Label "YR" Label CodeBlock "IF U SAY SO"
-//                         | "HOW DUZ I" Label "YR" Label "AN YR" Label CodeBlock "IF U SAY SO"
+//  syntax FuncDecl      ::= "HOW DUZ I" Id CodeBlock "IF U SAY SO"
+//                         | "HOW DUZ I" Id "YR" Id CodeBlock "IF U SAY SO"
+//                         | "HOW DUZ I" Id "YR" Id "AN YR" Id CodeBlock "IF U SAY SO"
 
- syntax Assignment    ::= Label "R" Exp                         [strict]
+ syntax Assignment    ::= Id "R" Exp                         [strict(2)]
 
  syntax Exps          ::= List{Exp,","}          [strict]  // automatically hybrid now
 
@@ -104,7 +101,7 @@ This section defines the syntax of LOLCODE.*/
 //                         | tbd
 
 
-// rule <k> "I HAS A" X:Id "ITZ" E:Exp; => "I HAS A" X; X "R" E; ...</k> [macro]
+ rule I HAS A X:Id ITZ E:Exp! => I HAS A X! X R E!  [macro]
 
 endmodule
 
@@ -152,25 +149,27 @@ module LOLCODE
                   <store color="white"> .Map </store>
                   <in color="magenta" stream="stdin"> .List </in>
                   <out color="brown" stream="stdout"> .List </out>
-                  <nextLoc color="gray"> 0 </nextLoc>
+                 <nextLoc color="gray"> 0 </nextLoc>
                 </T>
 
   rule <k> HAI CB:CodeBlock KTHXBAI => CB ...</k>
 
+//--------------------Variable Declaration--------------------
   syntax KItem ::= "undefined"  [latex(\bot)]
 
-  
-
-  rule <k> I HAS A X:Label; => . ...</k>
+  rule <k> I HAS A X:Id! => . ...</k>
        <env> Env => Env[X <- L] </env>
        <store>... .Map => L |-> undefined ...</store>
-       <nextLoc> L => L +Int 1 </nextLoc>
+      <nextLoc> L => L +Int 1 </nextLoc>
+//------------------------------------------------------------
 
-  // rule <k> X:Id R E:Exp => E ...<k>
+//------------------------Variable Assignment-----------------
+  rule <k> X:Id R E:Exp! => E ...</k>
+//------------------------------------------------------------
 
 //---------------------PRINT LINE----------------------------
-  rule <k> VISIBILE E:Exps => . ...</k> <out>... .List => ListItem(E) </out>
-    [print]
+  // rule <k> VISIBILE E:Exps => . ...</k> <out>... .List => ListItem(E) </out>
+  //   [print]
   // rule VISIBILE .Vals; => .  [structural]
 //-----------------------------------------------------------
 

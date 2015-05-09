@@ -6,30 +6,33 @@ exports
 
 context-free syntax
 context-free start-symbols
-DzString DzBool Statement CodeBlock Label String Int Assignment Float Bool Exps ProgramStart Value Id Ddeclaration PrintBlock Exp DzInt InputBlock DzFloat K
+DzString DzBool Statement CodeBlock String Int Assignment Float Bool Exps ProgramStart Value Id Ddeclaration PrintBlock Exp DzInt InputBlock DzFloat K
 context-free syntax
-    "HAI" InsertDzCodeBlock "KTHXBAI" -> ProgramStart {cons("ProgramStart1290Syn")}
-    Statement CodeBlock -> CodeBlock {cons("CodeBlock1454Syn")}
+    "HAI" InsertDzCodeBlock "KTHXBAI" -> ProgramStart {cons("ProgramStart1245Syn")}
+    Statement CodeBlock -> CodeBlock {cons("CodeBlock1356Syn")}
+    InputBlock "!" -> Statement {cons("Statement1295Syn")}
     DzString -> String {}
     DzBool -> Bool {}
+    PrintBlock "!" -> Statement {cons("Statement1236Syn")}
     Statement -> CodeBlock {}
+    "I HAS A" InsertDzId "ITZ" Exp -> Ddeclaration {cons("Ddeclaration1329Syn")}
     DzInt -> Int {}
-    Label "R" Exp -> Assignment {cons("Assignment1477Syn")}
-    Statement Statement -> Statement {cons("Statement19Syn")}
-    "GIMMEH" String -> InputBlock {cons("InputBlock167Syn")}
+    Statement Statement -> Statement {left, cons("Statement15Syn")}
+    Assignment "!" -> Statement {cons("Statement183Syn")}
+    "GIMMEH" String -> InputBlock {cons("InputBlock150Syn")}
     String -> Value {}
     {Exp ","}* -> Exps {cons("Exps1ListSyn")}
-    "VISIBLE" InsertDzExps "MKAY?" -> PrintBlock {cons("PrintBlock1378Syn")}
-    PrintBlock ";" -> Statement {cons("Statement1405Syn")}
+    "VISIBLE" InsertDzExps "MKAY?" -> PrintBlock {cons("PrintBlock1302Syn")}
+    Ddeclaration "!" -> Statement {cons("Statement1240Syn")}
     DzFloat -> Float {}
-    InputBlock ";" -> Statement {cons("Statement1309Syn")}
-    "I HAS A" Label -> Ddeclaration {cons("Ddeclaration153Syn")}
     Int -> Value {}
+    Id "R" Exp -> Assignment {cons("Assignment186Syn")}
     Value -> Exp {}
-    Ddeclaration ";" -> Statement {cons("Statement1448Syn")}
+    "I HAS A" Id -> Ddeclaration {cons("Ddeclaration1322Syn")}
     Bool -> Value {}
     Exps -> InsertDzExps
     CodeBlock -> InsertDzCodeBlock
+    Id -> InsertDzId
 
 
     DzDzString        -> DzString    {cons("DzString1Const")}
@@ -46,7 +49,6 @@ context-free syntax
     DzBool        -> K
     Statement        -> K
     CodeBlock        -> K
-    Label        -> K
     String        -> K
     Int        -> K
     Assignment        -> K
@@ -70,6 +72,7 @@ lexical syntax
 
     "Infinity" -> IdDz {reject}
     "false" -> IdDz {reject}
+    "ITZ" -> IdDz {reject}
     "VISIBLE" -> IdDz {reject}
     "HAI" -> IdDz {reject}
     "R" -> IdDz {reject}
@@ -86,6 +89,7 @@ lexical syntax
     [A-Za-z\_][A-Za-z0-9\_]* -> IdDz
     "Infinity" -> IdDz {reject}
     "false" -> IdDz {reject}
+    "ITZ" -> IdDz {reject}
     "VISIBLE" -> IdDz {reject}
     "HAI" -> IdDz {reject}
     "R" -> IdDz {reject}
@@ -94,9 +98,6 @@ lexical syntax
     "NaN" -> IdDz {reject}
     "KTHXBAI" -> IdDz {reject}
     [\-\+]? [0-9]+ -> DzIntDz
-    [a-z][\_a-zA-Z0-9]* -> LabelDz
-    "false" -> LabelDz {reject}
-    "true" -> LabelDz {reject}
     [\+\-]?[0-9]+"."[0-9]+([eE][\+\-]?[0-9]+)?([fFdD]|([pP][0-9]+[xX][0-9]+))? -> DzFloatDz
     [\+\-]?"Infinity"([fFdD]|([pP][0-9]+[xX][0-9]+))? -> DzFloatDz
     "Infinity" -> DzFloatDz {reject}
@@ -105,7 +106,6 @@ lexical syntax
     "\"" ((~[\"\n\r\\]) | (((([\\][nrtf\"\\]) | ([\\][x][0-9a-fA-F][0-9a-fA-F])) | ([\\][u][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F])) | ([\\][U][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F])))* "\"" -> DzStringDz
 context-free syntax
     DzStringDz -> DzString {cons("DzString1Const")}
-    LabelDz -> Label {cons("Label1Const")}
     IdDz -> Id {cons("Id1Const")}
     DzIntDz -> DzInt {cons("DzInt1Const")}
     DzFloatDz -> DzFloat {cons("DzFloat1Const")}
@@ -114,4 +114,3 @@ context-free syntax
 context-free restrictions
     Id -/- [A-Za-z0-9\_]
     DzInt -/-  [0-9]
-    Label -/- [\_a-zA-Z0-9]
