@@ -40,15 +40,23 @@ module OMGROFL-SYNTAX
   imports UNIFICATION 
   //imports BUILTIN-SYNTAX-HOOKS
 
- syntax Val ::= Int 
 
- syntax Stmt ::= Assignment
+
+ syntax Stmt ::= Exp "iz" Exp   [strict]
                // | "stfu                    [token]
-               | Out 
+               | "rofl" Exp               [print]
+               | "wtf" Exp Stmts "brb" [strict(1)]
+               // | IFStmt                 [avoid]
 
- syntax Out ::= "rofl" Id               [print]
+ syntax Exp ::= Int 
+              | Id 
+              | Bool
+              | Conditional
 
- syntax Assignment ::= Id "iz" Val
+ syntax Conditional ::= Exp "iz" "liek" Exp           [strict(1)]
+                      | Exp "nope" "iz" "liek" Exp    [strict(1)]
+                      | Exp "iz" "uber" Exp           [strict(1)]
+                      | Exp "nope" "iz" "uber" Exp    [strict(1)]
 
  syntax Stmts ::= Stmt
                 > Stmts  Stmts              [left]
@@ -61,13 +69,22 @@ module OMGROFL-SYNTAX
  syntax Sep ::= Sep "~> newline ~>" Stmt
               | Stmt      
 
+ syntax KItem ::= "debug" 
+ // syntax IFStmt ::= "if" "(" Exp ")" "{" Stmts "}"    [strict(1)]
+
  // rule S1:Sep S2:Stmt => S1 ~> newline ~> S2 [macro]
- rule ( X ) S:Stmt => X ~> newline ~> S
+
+ // rule wtf E:Exp Ss:Stmts brb  => if(E){Ss} [macro]
 
 endmodule
 
 module OMGROFL
   imports OMGROFL-SYNTAX
+
+  syntax Val ::= Int | Bool
+  syntax Vals ::= List{Val,","}
+  syntax Exp ::= Val
+  syntax KResult ::= Val
 
 configuration <T color="magenta">
                 <k color="green"> $PGM:Stmts </k>
@@ -92,17 +109,34 @@ configuration <T color="magenta">
  rule <k> addIdValue(X:Id, I:Int) => . ...</k>
  <state>... X |-> (_ => I) ...</state>
 
- rule <k> (X:Id iz I:Int):Assignment => addId(X) ~> addIdValue(X, I) ...</k>
+ rule <k> (X:Id iz I:Int) => addId(X) ~> addIdValue(X, I) ...</k>
       <state> Rho </state>  when notBool(X in keys(Rho))
- rule <k> (X:Id iz I:Int):Assignment => addIdValue(X, I) ...</k>
-      <state> Rho </state>  when X in keys(Rho)  
+ rule <k> (X:Id iz I:Int) => addIdValue(X, I) ...</k>
+      <state> Rho </state>  when X in keys(Rho)
+//-----------------------------------------------------------------------------
+
+//--------------------------------Lookup---------------------------------------
+  rule <k> X:Id => V ...</k>
+       <state>... X |-> V:Val ...</state> [lookup]
+//-----------------------------------------------------------------------------
+
+//----------------------------Conditionals-------------------------------------
+ rule wtf true S:Stmts brb => S
+ rule wtf false S:Stmts brb => .
+ rule V1:Val iz liek V2:Val => V1 ==K V2
+ rule V1:Val nope iz liek V2:Val => V1 =/=K V2
+//-----------------------------------------------------------------------------
+
+//---------------------Parse states in cond block------------------------------
+ // syntax KItem ::= "parseStmts""(" Stmts ")"
+ // rule <k> parseStmts(S:Stmt Ss:Stmts) => S ~> newline ~> Ss ...</k>
 //-----------------------------------------------------------------------------
 
 //--------------------Printing to stdout---------------------------------------
 
  rule <k> rofl X:Id => . ...</k>
- <state>... X |-> I:Int ...</state>
- <out>... .List => ListItem(chrChar(I:Int)) </out>
+      <state>... X |-> I:Int ...</state>
+      <out>... .List => ListItem(chrChar(I:Int)) </out>
 
   //  rule <k> print(V:Val, Es => Es)! ...</k> <out>... .List => ListItem(V) </out>
   //   [print]
@@ -110,6 +144,7 @@ configuration <T color="magenta">
 //-----------------------------------------------------------------------------
 
 //-------------Dirty trick for handing no newline delimiter--------------------
+  rule ( X ) S:Stmt => X ~> newline ~> S
   rule <k> newline ~> X => X ...</k>
 //-----------------------------------------------------------------------------
-
+endmodule

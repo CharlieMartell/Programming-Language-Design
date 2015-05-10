@@ -1,3 +1,5 @@
+looooooooooooooooool iz 1
+wtf looooooooooooooooool iz liek 1
 lol iz 72
 rofl lol
 lol iz 101
@@ -21,3 +23,4 @@ lol iz 100
 rofl lol
 lol iz 33
 rofl lol
+brb

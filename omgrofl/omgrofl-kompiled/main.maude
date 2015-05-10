@@ -1,8 +1,0 @@
-load "/Users/mac/k/lib/maude/lib/k-prelude"
-load "base.maude"
-load "builtins.maude"
-mod OMGROFL is 
-  including OMGROFL-BASE .
-  including OMGROFL-BUILTINS .
-eq mainModule = 'OMGROFL .
-endm
