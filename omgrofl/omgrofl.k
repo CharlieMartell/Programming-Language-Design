@@ -9,32 +9,6 @@ requires "modules/unification.k"
 // It is equipped with a stack/queue, has support for byte-sized variables and 
 // keywords resembling Internet slang. The name comes from combining the slang 
 // "words" omg and rofl. Rofl is actually one of Omgrofl's commands.
-
-// Hello World Program vv
-// lol iz 72
-// rofl lol
-// lol iz 101
-// rofl lol
-// lol iz 108
-// rofl lol
-// rofl lol
-// lool iz 111
-// rofl lool
-// loool iz 44
-// rofl loool
-// loool iz 32
-// rofl loool
-// loool iz 87
-// rofl loool
-// rofl lool
-// lool iz 114
-// rofl lool
-// rofl lol
-// lol iz 100
-// rofl lol
-// lol iz 33
-// rofl lol
-// stfu
 // */
 module OMGROFL-SYNTAX
   imports UNIFICATION 
@@ -47,7 +21,13 @@ module OMGROFL-SYNTAX
                | "sftw" Id                [read]
                | "wtf" Exp Stmts "brb" [strict(1)]
                | "4" Exp "iz" Exp "2lmfao" Exp Stmts "ayylmao" [strict(3)]
-               | "rtfm" Stmts "brb"
+               | Loop
+               | "tldr"
+               | "n00b" Exp [strict]             
+               | "l33t" Id                
+               | "haxor" Id                              
+ 
+ syntax Loop ::= "rtfm" Stmts "brb"
 
  syntax Assignment ::= Exp "iz" Exp   [strict(2)]
 
@@ -89,6 +69,7 @@ configuration <T color="magenta">
                 <state color="red"> .Map </state>
                 <in stream="stdin" color="cyan"> .List </in>
                 <out stream="stdout" color="blue"> .List </out>
+                <stack color="purple"> .List </stack>
               </T>
 
  /*@ \subsubsection{Assignment}
@@ -100,7 +81,7 @@ configuration <T color="magenta">
  syntax KItem ::= "addId(" Id ")"
 
  rule <k> addId(X:Id) => . ...</k>
- <state>... (.Map => X|->0) ...</state>
+  <state>... (.Map => X|->0) ...</state>
 
  syntax KItem ::= "addIdValue""(" Id "," Exp ")" [strict(2)]
 
@@ -132,7 +113,9 @@ configuration <T color="magenta">
 //-----------------------------------------------------------------------------
 
 //-------------------------------Loop------------------------------------------
- //TODO
+ rule <k> rtfm Ss:Stmts brb => Ss ~> rtfm Ss brb ...</k>
+ rule <k> tldr ~> X:Loop => . ...</k>
+ rule <k> tldr ~> X ~> Z => tldr ~> Z ...</k>
 //-----------------------------------------------------------------------------
 
 //---------------------------------Increment-----------------------------------
@@ -143,6 +126,31 @@ configuration <T color="magenta">
 //--------------------------------Lookup---------------------------------------
   rule <k> X:Id => V ...</k>
        <state>... X |-> V:Val ...</state> [lookup]
+//-----------------------------------------------------------------------------
+
+//----------------------------Stack/Queue Operations---------------------------
+  rule <k> n00b E:Int => . ...</k>
+       <stack> .List => ListItem(E) ...</stack>
+
+  rule <k> l33t X:Id => addId(X) ~> addIdValue(X, E:Int) ...</k>
+       <stack> ListItem(E) => .List ...</stack>
+       <state> Rho </state>
+       when notBool(X in keys(Rho))
+
+  rule <k> l33t X:Id => addIdValue(X, E:Int) ...</k>
+       <stack> ListItem(E) => .List ...</stack>
+       <state> Rho </state>
+       when X in keys(Rho)
+
+  rule <k> haxor X:Id => addId(X) ~> addIdValue(X, E) ...</k>
+       <stack>... ListItem(E) => .List </stack>
+       <state> Rho </state>
+       when notBool(X in keys(Rho))
+
+  rule <k> haxor X:Id => addIdValue(X, E) ...</k>
+       <stack>... ListItem(E) => .List </stack>
+       <state> Rho </state>
+       when X in keys(Rho)
 //-----------------------------------------------------------------------------
 
 //----------------------------Conditionals-------------------------------------
