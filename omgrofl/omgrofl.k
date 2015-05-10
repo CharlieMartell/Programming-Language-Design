@@ -44,10 +44,12 @@ module OMGROFL-SYNTAX
 
  syntax Stmt ::= Exp
                | "rofl" Exp               [print]
+               | "sftw" Id                [read]
                | "wtf" Exp Stmts "brb" [strict(1)]
-               | "4thelulz" Exp "iz" Exp "lmfao2" Exp Stmts "ayylmao" [strict(3)]
+               | "4" Exp "iz" Exp "2lmfao" Exp Stmts "ayylmao" [strict(3)]
+               | "rtfm" Stmts "brb"
 
- syntax Assignment ::= Exp "iz" Exp   [strict]
+ syntax Assignment ::= Exp "iz" Exp   [strict(2)]
 
  syntax Exp ::= Int 
               | Id 
@@ -100,10 +102,13 @@ configuration <T color="magenta">
  rule <k> addId(X:Id) => . ...</k>
  <state>... (.Map => X|->0) ...</state>
 
- syntax KItem ::= "addIdValue(" Id "," Int ")"
+ syntax KItem ::= "addIdValue""(" Id "," Exp ")" [strict(2)]
 
  rule <k> addIdValue(X:Id, I:Int) => . ...</k>
  <state>... X |-> (_ => I) ...</state>
+
+ rule <k> (X:Id iz I:Id) => addId(X) ~> addIdValue(X, I) ...</k>
+      <state> Rho </state>  when notBool(X in keys(Rho))
 
  rule <k> (X:Id iz I:Int) => addId(X) ~> addIdValue(X, I) ...</k>
       <state> Rho </state>  when notBool(X in keys(Rho))
@@ -113,7 +118,7 @@ configuration <T color="magenta">
 
 //------------------------------For Loop---------------------------------------
   syntax KItem ::= "while" "(" Exp "nope" "iz" "liek" Exp ")" "{" Stmts "}"
-  rule <k> 4thelulz E1:Exp iz E2:Exp lmfao2 I:Int S:Stmts ayylmao =>
+  rule <k> 4 E1:Exp iz E2:Exp 2lmfao I:Int S:Stmts ayylmao =>
           E1 iz E2 ~> while(E1 nope iz liek I){S} ...</k>
 
   rule <k> while(V1:Exp nope iz liek V2:Exp) {S} 
@@ -124,7 +129,10 @@ configuration <T color="magenta">
     rule <k> while(V1:Exp nope iz liek V2:Exp) {S} => . ...</k>
       <state> V1 |-> X </state>
       when (X ==K V2)
+//-----------------------------------------------------------------------------
 
+//-------------------------------Loop------------------------------------------
+ //TODO
 //-----------------------------------------------------------------------------
 
 //---------------------------------Increment-----------------------------------
@@ -146,17 +154,15 @@ configuration <T color="magenta">
  rule V1:Int nope iz uber V2:Int => V1 <=Int V2
 //-----------------------------------------------------------------------------
 
-//---------------------Parse states in cond block------------------------------
- // syntax KItem ::= "parseStmts""(" Stmts ")"
- // rule <k> parseStmts(S:Stmt Ss:Stmts) => S ~> newline ~> Ss ...</k>
-//-----------------------------------------------------------------------------
-
-//--------------------Printing to stdout---------------------------------------
+//----------------------------------IO-----------------------------------------
  rule <k> rofl X:Id => . ...</k>
       <state>... X |-> I:Int ...</state>
       <out>... .List => ListItem(chrChar(I:Int)) </out>
  rule <k> rofl X:Int => . ...</k>
       <out>... .List => ListItem(chrChar(X:Int)) </out>
+
+ rule <k> sftw X:Id => addId(X) ~> addIdValue(X, In) ...</k>
+      <in> ListItem(In:Int) => .List ...</in> 
 //-----------------------------------------------------------------------------
 
 //-------------Dirty trick for handing no newline delimiter--------------------

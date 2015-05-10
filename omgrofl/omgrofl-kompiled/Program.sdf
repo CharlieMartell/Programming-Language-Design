@@ -9,7 +9,7 @@ context-free priorities
 {
     Stmt -> Stmts {}
 } > {
-    Stmts Stmts -> Stmts {left, cons("Stmts1206Syn")}
+    Stmts Stmts -> Stmts {left, cons("Stmts1205Syn")}
 }
 
 context-free start-symbols
@@ -17,40 +17,42 @@ DzString DzBool Set Stmts Lol Conditional K String KList Int Stmt Assignment Flo
 context-free syntax
     Assignment -> Exp {}
     DzString -> String {}
-    Set Set -> Set {left, cons("Set1245Syn")}
+    Set Set -> Set {left, cons("Set1244Syn")}
+    "4" InsertDzExp "iz" InsertDzExp "2lmfao" InsertDzExp InsertDzStmts "ayylmao" -> Stmt {cons("Stmt1267Syn")}
     DzInt -> Int {}
     Exp -> Stmt {}
     DzFloat -> Float {}
     Bool -> Exp {}
-    "#renameVariables" "(" InsertDzK ")" -> K {cons("K164Syn")}
+    "#renameVariables" "(" InsertDzK ")" -> K {cons("K163Syn")}
     Bool -> Conditional {}
-    "wtf" InsertDzExp InsertDzStmts "brb" -> Stmt {cons("Stmt196Syn")}
+    "wtf" InsertDzExp InsertDzStmts "brb" -> Stmt {cons("Stmt195Syn")}
     "lmao" Exp -> Conditional {cons("Conditional1279Syn")}
+    "rtfm" InsertDzStmts "brb" -> Stmt {cons("Stmt1330Syn")}
     Exp "iz" Exp -> Assignment {cons("Assignment127Syn")}
-    "#freezeVariables" "(" InsertDzK "," InsertDzK ")" -> K {cons("K1202Syn")}
-    "4thelulz" InsertDzExp "iz" InsertDzExp "lmfao2" InsertDzExp InsertDzStmts "ayylmao" -> Stmt {cons("Stmt1282Syn")}
-    "#metaVariables" "(" InsertDzK ")" -> Set {cons("Set1387Syn")}
+    "#freezeVariables" "(" InsertDzK "," InsertDzK ")" -> K {cons("K1200Syn")}
+    "#metaVariables" "(" InsertDzK ")" -> Set {cons("Set1389Syn")}
     K "in" Set -> Bool {cons("Bool1334Syn")}
     DzBool -> Bool {}
     Id -> Exp {}
-    "SetItem" "(" InsertDzK ")" -> Set {cons("Set1257Syn")}
-    Set "<=Set" Set -> Bool {cons("Bool1209Syn")}
-    "size" "(" InsertDzSet ")" -> Int {cons("Int1389Syn")}
+    "SetItem" "(" InsertDzK ")" -> Set {cons("Set1256Syn")}
+    Set "<=Set" Set -> Bool {cons("Bool1208Syn")}
+    "size" "(" InsertDzSet ")" -> Int {cons("Int1392Syn")}
     Int -> Exp {}
-    Exp "nope" "iz" "liek" Exp -> Conditional {cons("Conditional168Syn")}
-    "choice" "(" InsertDzSet ")" -> K {cons("K1259Syn")}
-    "rofl" Exp -> Stmt {cons("Stmt173Syn")}
+    Exp "nope" "iz" "liek" Exp -> Conditional {cons("Conditional167Syn")}
+    "choice" "(" InsertDzSet ")" -> K {cons("K1258Syn")}
+    "rofl" Exp -> Stmt {cons("Stmt172Syn")}
     Exp "nope" "iz" "uber" Exp -> Conditional {cons("Conditional135Syn")}
     "newline" -> KItem {cons("KItem136Syn")}
     Conditional -> Exp {}
-    "#variablesMap" "(" InsertDzK ")" -> KItem {cons("KItem1263Syn")}
-    Exp "iz" "uber" Exp -> Conditional {cons("Conditional178Syn")}
+    "#variablesMap" "(" InsertDzK ")" -> KItem {cons("KItem1262Syn")}
+    Exp "iz" "uber" Exp -> Conditional {cons("Conditional177Syn")}
     K -> KList {}
-    "#variables" "(" InsertDzK ")" -> Set {cons("Set1395Syn")}
+    "sftw" Id -> Stmt {cons("Stmt1344Syn")}
+    "#variables" "(" InsertDzK ")" -> Set {cons("Set1397Syn")}
     KItem -> K {}
-    "debug" -> KItem {cons("KItem1300Syn")}
-    "intersectSet" "(" InsertDzSet "," InsertDzSet ")" -> Set {cons("Set1239Syn")}
-    ".Set" -> Set {cons("Set1304Syn")}
+    "debug" -> KItem {cons("KItem1299Syn")}
+    "intersectSet" "(" InsertDzSet "," InsertDzSet ")" -> Set {cons("Set1238Syn")}
+    ".Set" -> Set {cons("Set1303Syn")}
     "#unifiable" "(" InsertDzK "," InsertDzK ")" -> Bool {cons("Bool146Syn")}
     Set "-Set" Set -> Set {cons("Set149Syn")}
     Exp "iz" "liek" Exp -> Conditional {cons("Conditional150Syn")}
@@ -103,9 +105,9 @@ lexical syntax
     "lmao" -> IdDz {reject}
     "intersectSet" -> IdDz {reject}
     "ayylmao" -> IdDz {reject}
+    "sftw" -> IdDz {reject}
     "debug" -> IdDz {reject}
     "Infinity" -> IdDz {reject}
-    "lmfao2" -> IdDz {reject}
     "in" -> IdDz {reject}
     "false" -> IdDz {reject}
     "wtf" -> IdDz {reject}
@@ -115,6 +117,7 @@ lexical syntax
     "rofl" -> IdDz {reject}
     "true" -> IdDz {reject}
     "choice" -> IdDz {reject}
+    "rtfm" -> IdDz {reject}
 
 lexical restrictions
     %% follow restrictions
@@ -133,9 +136,9 @@ lexical syntax
     "lmao" -> IdDz {reject}
     "intersectSet" -> IdDz {reject}
     "ayylmao" -> IdDz {reject}
+    "sftw" -> IdDz {reject}
     "debug" -> IdDz {reject}
     "Infinity" -> IdDz {reject}
-    "lmfao2" -> IdDz {reject}
     "in" -> IdDz {reject}
     "false" -> IdDz {reject}
     "wtf" -> IdDz {reject}
@@ -145,8 +148,11 @@ lexical syntax
     "rofl" -> IdDz {reject}
     "true" -> IdDz {reject}
     "choice" -> IdDz {reject}
+    "rtfm" -> IdDz {reject}
     [\-\+]? [0-9]+ -> DzIntDz
+    "4" -> DzIntDz {reject}
     [\+\-]?[0-9]+"."[0-9]+([eE][\+\-]?[0-9]+)?([fFdD]|([pP][0-9]+[xX][0-9]+))? -> DzFloatDz
+    "4" -> DzFloatDz {reject}
     [\+\-]?"Infinity"([fFdD]|([pP][0-9]+[xX][0-9]+))? -> DzFloatDz
     "Infinity" -> DzFloatDz {reject}
     "NaN"([fFdD]|([pP][0-9]+[xX][0-9]+))? -> DzFloatDz
@@ -165,13 +171,12 @@ lexical syntax
     "NaN" -> LolDz {reject}
     "lmao" -> LolDz {reject}
     "intersectSet" -> LolDz {reject}
-    "4thelulz" -> LolDz {reject}
     "-Set" -> LolDz {reject}
     "ayylmao" -> LolDz {reject}
+    "sftw" -> LolDz {reject}
     "debug" -> LolDz {reject}
     "Infinity" -> LolDz {reject}
     "#rename" -> LolDz {reject}
-    "lmfao2" -> LolDz {reject}
     "in" -> LolDz {reject}
     "(" -> LolDz {reject}
     "false" -> LolDz {reject}
@@ -183,11 +188,14 @@ lexical syntax
     "iz" -> LolDz {reject}
     "#renameVariables" -> LolDz {reject}
     "size" -> LolDz {reject}
+    "4" -> LolDz {reject}
     "#variablesMap" -> LolDz {reject}
     "rofl" -> LolDz {reject}
+    "2lmfao" -> LolDz {reject}
     "true" -> LolDz {reject}
     "#freezeVariables" -> LolDz {reject}
     "choice" -> LolDz {reject}
+    "rtfm" -> LolDz {reject}
 context-free syntax
     DzStringDz -> DzString {cons("DzString1Const")}
     LolDz -> Lol {cons("Lol1Const")}
