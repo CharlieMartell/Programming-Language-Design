@@ -31,20 +31,23 @@ use it only when you want to terminate the execution of the program in another p
 brb – serves as end in Pascal, } in C. See wtf or rtfm.
 variable iz x – is assignment – like = in C.
 lmao x – increments x by one.
-roflmao x – decrements value of x by one.
+lulz x – decrements value of x by one.
 */
 
  syntax Stmt ::= Exp
-               | "rofl" Exp               [print]
-               | "sftw" Id                [read]
+               | "lmao" Exp
+               | "lulz" Exp             
+               | "stfw" Id                [read]
                | "wtf" Exp Stmts "brb" [strict(1)]
-               | "4" Exp "iz" Exp "2lmfao" Exp Stmts "ayylmao" [strict(3)]
+               | "4" Exp "iz" Exp "2lmfao" Exp Stmts "brb" [strict(3)]
                | Loop
                | "tldr"
                | "n00b" Exp [strict]             
                | "l33t" Id                
                | "haxor" Id  
-               | "stfu"                            
+               | "stfu" 
+               | Exp "to" "/dev/null"
+               | "rofl" Exp               [print]                      
  
  syntax Loop ::= "rtfm" Stmts "brb"
 
@@ -60,8 +63,6 @@ roflmao x – decrements value of x by one.
                       | Exp "nope" "iz" "liek" Exp    [strict(1)]
                       | Exp "iz" "uber" Exp           [strict(1)]
                       | Exp "nope" "iz" "uber" Exp    [strict(1)]
-                      | "lmao" Exp
-                      | "roflmao" Exp 
                       | Bool  
 
 
@@ -73,11 +74,13 @@ roflmao x – decrements value of x by one.
 
  syntax KItem ::= "newline" 
 
+ rule E:Exp to /dev/null => E iz 0 [macro]
 
 endmodule
 
 module OMGROFL
   imports OMGROFL-SYNTAX
+  imports UNIFICATION
 /*@ \section{Semantics}
 This module defines the semantics of OmgRofl\@.
 Before you start adding semantic rules to a \K definition, you need to
@@ -130,7 +133,7 @@ configuration <T color="magenta">
 
 //------------------------------For Loop---------------------------------------
   syntax KItem ::= "while" "(" Exp "nope" "iz" "liek" Exp ")" "{" Stmts "}"
-  rule <k> 4 E1:Exp iz E2:Exp 2lmfao I:Int S:Stmts ayylmao =>
+  rule <k> 4 E1:Exp iz E2:Exp 2lmfao I:Int S:Stmts brb =>
           E1 iz E2 ~> while(E1 nope iz liek I){S} ...</k>
 
   rule <k> while(V1:Exp nope iz liek V2:Exp) {S} 
@@ -155,7 +158,7 @@ configuration <T color="magenta">
 //-----------------------------------------------------------------------------
 
 //---------------------------------Decrement-----------------------------------
-  rule <k> roflmao L:Id => . ...</k>
+  rule <k> lulz L:Id => . ...</k>
        <state>... L |-> (I => I -Int 1) ...</state>  [increment]
 //-----------------------------------------------------------------------------
 
@@ -210,7 +213,7 @@ configuration <T color="magenta">
  rule <k> rofl X:Int => . ...</k>
       <out>... .List => ListItem(chrChar(X:Int)) </out>
 
- rule <k> sftw X:Id => addId(X) ~> addIdValue(X, In) ...</k>
+ rule <k> stfw X:Id => addId(X) ~> addIdValue(X, In) ...</k>
       <in> ListItem(In:Int) => .List ...</in> 
 //-----------------------------------------------------------------------------
 

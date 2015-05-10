@@ -1,24 +1,58 @@
-lol iz 72
-rofl lol
-lol iz 101
-rofl lol
-lol iz 108
-rofl lol
-stfu
-rofl lol
-lool iz 111
-rofl lool
-loool iz 44
-rofl loool
-loool iz 32
-rofl loool
-loool iz 87
-rofl loool
-rofl lool
-lool iz 114
-rofl lool
-rofl lol
-lol iz 100
-rofl lol
-lol iz 33
-rofl lol
+
+rtfm
+    stfw lol
+    lool iz lol
+    wtf lol iz liek 255
+        tldr
+    brb
+    wtf lol iz uber 64
+        wtf lol nope iz uber 77
+            loool iz 13
+            rtfm
+                wtf loool iz liek 0
+                    tldr
+                brb
+                lmao lool
+                lulz loool
+            brb
+        brb
+    brb
+    wtf lol iz uber 77
+        wtf lol nope iz uber 90
+            loool iz 13
+            rtfm
+                wtf loool iz liek 0
+                    tldr
+                brb
+                lulz lool
+                lulz loool
+            brb
+        brb
+    brb
+    wtf lol iz uber 96
+        wtf lol nope iz uber 109
+            loool iz 13
+            rtfm
+                wtf loool iz liek 0
+                    tldr
+                brb
+                lmao lool
+                lulz loool
+            brb
+        brb
+    brb
+    wtf lol iz uber 109
+        wtf lol nope iz uber 122
+            loool iz 13
+            rtfm
+                wtf loool iz liek 0
+                    tldr
+                brb
+                lulz lool
+                lulz loool
+            brb
+        brb
+    brb
+
+    rofl lool
+brb
