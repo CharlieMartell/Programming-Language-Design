@@ -42,21 +42,26 @@ module OMGROFL-SYNTAX
 
 
 
- syntax Stmt ::= Exp "iz" Exp   [strict]
-               // | "stfu                    [token]
+ syntax Stmt ::= Exp
                | "rofl" Exp               [print]
                | "wtf" Exp Stmts "brb" [strict(1)]
-               // | IFStmt                 [avoid]
+               | "4thelulz" Exp "iz" Exp "lmfao2" Exp Stmts "ayylmao" [strict(3)]
+
+ syntax Assignment ::= Exp "iz" Exp   [strict]
 
  syntax Exp ::= Int 
               | Id 
               | Bool
               | Conditional
+              | Assignment
 
  syntax Conditional ::= Exp "iz" "liek" Exp           [strict(1)]
                       | Exp "nope" "iz" "liek" Exp    [strict(1)]
                       | Exp "iz" "uber" Exp           [strict(1)]
                       | Exp "nope" "iz" "uber" Exp    [strict(1)]
+                      | "lmao" Exp 
+                      | Bool  
+
 
  syntax Stmts ::= Stmt
                 > Stmts  Stmts              [left]
@@ -64,17 +69,8 @@ module OMGROFL-SYNTAX
  //Need to rework regex to only take lo*l
  syntax Lol ::= Token{[a-z][a-zA-Z0-9\_]*}        [variable, onlyLabel, autoReject, token]
 
- syntax KItem ::= "newline" 
+ syntax KItem ::= "debug" | "newline" 
 
- syntax Sep ::= Sep "~> newline ~>" Stmt
-              | Stmt      
-
- syntax KItem ::= "debug" 
- // syntax IFStmt ::= "if" "(" Exp ")" "{" Stmts "}"    [strict(1)]
-
- // rule S1:Sep S2:Stmt => S1 ~> newline ~> S2 [macro]
-
- // rule wtf E:Exp Ss:Stmts brb  => if(E){Ss} [macro]
 
 endmodule
 
@@ -115,6 +111,27 @@ configuration <T color="magenta">
       <state> Rho </state>  when X in keys(Rho)
 //-----------------------------------------------------------------------------
 
+//------------------------------For Loop---------------------------------------
+  syntax KItem ::= "while" "(" Exp "nope" "iz" "liek" Exp ")" "{" Stmts "}"
+  rule <k> 4thelulz E1:Exp iz E2:Exp lmfao2 I:Int S:Stmts ayylmao =>
+          E1 iz E2 ~> while(E1 nope iz liek I){S} ...</k>
+
+  rule <k> while(V1:Exp nope iz liek V2:Exp) {S} 
+          => S ~> newline ~> while(V1 nope iz liek V2) {S} ...</k>
+      <state> V1 |-> X </state>
+      when (X =/=K V2)
+
+    rule <k> while(V1:Exp nope iz liek V2:Exp) {S} => . ...</k>
+      <state> V1 |-> X </state>
+      when (X ==K V2)
+
+//-----------------------------------------------------------------------------
+
+//---------------------------------Increment-----------------------------------
+  rule <k> lmao L:Id => . ...</k>
+       <state>... L |-> (I => I +Int 1) ...</state>  [increment]
+//-----------------------------------------------------------------------------
+
 //--------------------------------Lookup---------------------------------------
   rule <k> X:Id => V ...</k>
        <state>... X |-> V:Val ...</state> [lookup]
@@ -125,6 +142,8 @@ configuration <T color="magenta">
  rule wtf false S:Stmts brb => .
  rule V1:Val iz liek V2:Val => V1 ==K V2
  rule V1:Val nope iz liek V2:Val => V1 =/=K V2
+ rule V1:Int iz uber V2:Int => V1 >Int V2
+ rule V1:Int nope iz uber V2:Int => V1 <=Int V2
 //-----------------------------------------------------------------------------
 
 //---------------------Parse states in cond block------------------------------
@@ -133,14 +152,11 @@ configuration <T color="magenta">
 //-----------------------------------------------------------------------------
 
 //--------------------Printing to stdout---------------------------------------
-
  rule <k> rofl X:Id => . ...</k>
       <state>... X |-> I:Int ...</state>
       <out>... .List => ListItem(chrChar(I:Int)) </out>
-
-  //  rule <k> print(V:Val, Es => Es)! ...</k> <out>... .List => ListItem(V) </out>
-  //   [print]
-  // rule print(.Vals)! => .  [structural]
+ rule <k> rofl X:Int => . ...</k>
+      <out>... .List => ListItem(chrChar(X:Int)) </out>
 //-----------------------------------------------------------------------------
 
 //-------------Dirty trick for handing no newline delimiter--------------------

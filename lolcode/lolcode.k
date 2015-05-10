@@ -131,11 +131,11 @@ module LOLCODE
     when N >=Int 0
 
   syntax Id ::= "$1" | "$2"
-  rule ihasa X:Id[N1:Int, N2:Int, Vs:Vals]!
-    => ihasa X[N1]!
+  rule for X:Id[N1:Int, N2:Int, Vs:Vals]!
+    => for X[N1]!
        {
-         for(ihasa $1 R 0! $1 <= N1 - 1! ++$1) {
-           ihasa $2[N2, Vs]!
+         for(for $1 R 0! $1 <= N1 - 1! ++$1) {
+           for $2[N2, Vs]!
            X[$1] R $2!
          }
        }
