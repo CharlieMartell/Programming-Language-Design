@@ -12,10 +12,7 @@ requires "modules/unification.k"
 // */
 module OMGROFL-SYNTAX
   imports UNIFICATION 
-  //imports BUILTIN-SYNTAX-HOOKS
-
-
-
+  
  syntax Stmt ::= Exp
                | "rofl" Exp               [print]
                | "sftw" Id                [read]
@@ -41,7 +38,8 @@ module OMGROFL-SYNTAX
                       | Exp "nope" "iz" "liek" Exp    [strict(1)]
                       | Exp "iz" "uber" Exp           [strict(1)]
                       | Exp "nope" "iz" "uber" Exp    [strict(1)]
-                      | "lmao" Exp 
+                      | "lmao" Exp
+                      | "roflmao" Exp 
                       | Bool  
 
 
@@ -121,6 +119,11 @@ configuration <T color="magenta">
 //---------------------------------Increment-----------------------------------
   rule <k> lmao L:Id => . ...</k>
        <state>... L |-> (I => I +Int 1) ...</state>  [increment]
+//-----------------------------------------------------------------------------
+
+//---------------------------------Decrement-----------------------------------
+  rule <k> roflmao L:Id => . ...</k>
+       <state>... L |-> (I => I -Int 1) ...</state>  [increment]
 //-----------------------------------------------------------------------------
 
 //--------------------------------Lookup---------------------------------------
