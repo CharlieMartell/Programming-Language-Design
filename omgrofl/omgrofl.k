@@ -37,21 +37,21 @@ lulz x – decrements value of x by one.
  syntax Stmt ::= Exp
                | "lmao" Exp
                | "lulz" Exp             
-               | "stfw" Id                [read]
-               | "wtf" Exp Stmts "brb" [strict(1)]
-               | "4" Exp "iz" Exp "2lmfao" Exp Stmts "brb" [strict(3)]
+               | "stfw" Id                                  [read]
+               | "wtf" Exp Stmts "brb"                      [strict(1)]
+               | "4" Exp "iz" Exp "2lmfao" Exp Stmts "brb"  [strict(3)]
                | Loop
                | "tldr"
-               | "n00b" Exp [strict]             
+               | "n00b" Exp                                 [strict]             
                | "l33t" Id                
                | "haxor" Id  
                | "stfu" 
                | Exp "to" "/dev/null"
-               | "rofl" Exp               [print]                      
+               | "rofl" Exp                                 [print]                      
  
  syntax Loop ::= "rtfm" Stmts "brb"
 
- syntax Assignment ::= Exp "iz" Exp   [strict(2)]
+ syntax Assignment ::= Exp "iz" Exp                         [strict(2)]
 
  syntax Exp ::= Int 
               | Id 
@@ -59,22 +59,22 @@ lulz x – decrements value of x by one.
               | Conditional
               | Assignment
 
- syntax Conditional ::= Exp "iz" "liek" Exp           [strict(1)]
-                      | Exp "nope" "iz" "liek" Exp    [strict(1)]
-                      | Exp "iz" "uber" Exp           [strict(1)]
-                      | Exp "nope" "iz" "uber" Exp    [strict(1)]
+ syntax Conditional ::= Exp "iz" "liek" Exp                 [strict(1)]
+                      | Exp "nope" "iz" "liek" Exp          [strict(1)]
+                      | Exp "iz" "uber" Exp                 [strict(1)]
+                      | Exp "nope" "iz" "uber" Exp          [strict(1)]
                       | Bool  
 
 
  syntax Stmts ::= Stmt
-                > Stmts  Stmts              [left]
+                > Stmts  Stmts                              [left]
 
  //Need to rework regex to only take lo*l
- syntax Lol ::= Token{[a-z][a-zA-Z0-9\_]*}        [variable, onlyLabel, autoReject, token]
+ syntax Lol ::= Token{[a-z][a-zA-Z0-9\_]*}                  [variable, onlyLabel, autoReject, token]
 
  syntax KItem ::= "newline" 
 
- rule E:Exp to /dev/null => E iz 0 [macro]
+ rule E:Exp to /dev/null => E iz 0                          [macro]
 
 endmodule
 
@@ -154,12 +154,12 @@ configuration <T color="magenta">
 
 //---------------------------------Increment-----------------------------------
   rule <k> lmao L:Id => . ...</k>
-       <state>... L |-> (I => I +Int 1) ...</state>  [increment]
+       <state>... L |-> (I => I +Int 1) ...</state>         [increment]
 //-----------------------------------------------------------------------------
 
 //---------------------------------Decrement-----------------------------------
   rule <k> lulz L:Id => . ...</k>
-       <state>... L |-> (I => I -Int 1) ...</state>  [increment]
+       <state>... L |-> (I => I -Int 1) ...</state>         [increment]
 //-----------------------------------------------------------------------------
 
 //---------------------------------End-----------------------------------------
@@ -169,7 +169,7 @@ configuration <T color="magenta">
 
 //--------------------------------Lookup---------------------------------------
   rule <k> X:Id => V ...</k>
-       <state>... X |-> V:Val ...</state> [lookup]
+       <state>... X |-> V:Val ...</state>                   [lookup]
 //-----------------------------------------------------------------------------
 
 //----------------------------Stack/Queue Operations---------------------------
