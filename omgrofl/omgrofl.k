@@ -1,18 +1,39 @@
 requires "modules/unification.k"
-// /*!
-// \title{OmgRofl}
-// \author{Charlie Martell}
-// \organization{CS 422, University of Illinois at Urbana-Champaign} */
+/*!
+\setlength{\parindent}{1em}
+\title{OmgRofl}
+\author{Charlie Martell}
+\organization{CS 422, University of Illinois at Urbana-Champaign} */
 
-// /*@ \section{Abstract}
-// Omgrofl is an esoteric programming language created in 2006 by Juraj Borza. 
-// It is equipped with a stack/queue, has support for byte-sized variables and 
-// keywords resembling Internet slang. The name comes from combining the slang 
-// "words" omg and rofl. Rofl is actually one of Omgrofl's commands.
-// */
+/*@ \section{Abstract}
+Omgrofl is an esoteric programming language created in 2006 by Juraj Borza. 
+It is equipped with a stack/queue, has support for byte-sized variables and 
+keywords resembling Internet slang. The name comes from combining the slang 
+"words" omg and rofl. Rofl is actually one of Omgrofl's commands.
+*/
 module OMGROFL-SYNTAX
-  imports UNIFICATION 
-  
+/*@ \section{Syntax}
+This module defines the syntax of OmgRofl\@.
+The Semantic Constructs are as follows 
+wtf condition – is a conditional statement (like if in C).
+rtfm – begins a loop.
+4 variable iz initial-value 2 end-value - begins a "for" loop.
+stfw x – reads a value into x. A byte character is read from standard input, 
+and its value is stored into x, like in brainfuck.
+rofl x – prints out the value of x as a byte character. Also like in brainfuck.
+n00b x – pushes x onto the stack / enqueues x.
+l33t x – pops a value from the stack and stores it into x. 
+If the stack/queue is empty, 0 is stored into x.
+haxor x - dequeues a value. If the stack/queue is empty, 0 is stored into x.
+stfu – exits application immediately. It is unnecessary at the end of the program, 
+use it only when you want to terminate the execution of the program in another place 
+(like exit in C.)
+brb – serves as end in Pascal, } in C. See wtf or rtfm.
+variable iz x – is assignment – like = in C.
+lmao x – increments x by one.
+roflmao x – decrements value of x by one.
+*/
+
  syntax Stmt ::= Exp
                | "rofl" Exp               [print]
                | "sftw" Id                [read]
@@ -22,7 +43,8 @@ module OMGROFL-SYNTAX
                | "tldr"
                | "n00b" Exp [strict]             
                | "l33t" Id                
-               | "haxor" Id                              
+               | "haxor" Id  
+               | "stfu"                            
  
  syntax Loop ::= "rtfm" Stmts "brb"
 
@@ -49,19 +71,34 @@ module OMGROFL-SYNTAX
  //Need to rework regex to only take lo*l
  syntax Lol ::= Token{[a-z][a-zA-Z0-9\_]*}        [variable, onlyLabel, autoReject, token]
 
- syntax KItem ::= "debug" | "newline" 
+ syntax KItem ::= "newline" 
 
 
 endmodule
 
 module OMGROFL
   imports OMGROFL-SYNTAX
+/*@ \section{Semantics}
+This module defines the semantics of OmgRofl\@.
+Before you start adding semantic rules to a \K definition, you need to
+define the basic semantic infrastructure consisting of definitions for
+{\em results} and the {\em configuration}.  */
 
   syntax Val ::= Int | Bool
   syntax Vals ::= List{Val,","}
   syntax Exp ::= Val
   syntax KResult ::= Val
 
+/*@ The configuration variable $\${\it PGM}$ tells the \K tool where to
+place the program.  More precisely, the command
+``\texttt{krun program}'' parses the program and places the resulting
+\K abstract syntax tree in the \textsf{k} cell before invoking the
+semantic rules described in the sequel.  The ``$\kdot$'' in the
+\textsf{state} cell, written \texttt{.Map} in ASCII in the
+\texttt{imp.k} file, is \K's way to say ``nothing''.  Technically, it
+is a constant which is the unit, or identity, of all maps in \K
+(similar dot units exist for other \K structures, such as lists, sets,
+multi-sets, etc.).  */
 configuration <T color="magenta">
                 <k color="green"> $PGM:Stmts </k>
                 <state color="red"> .Map </state>
@@ -70,10 +107,6 @@ configuration <T color="magenta">
                 <stack color="purple"> .List </stack>
               </T>
 
- /*@ \subsubsection{Assignment}
-  The assigned variable is updated in the state.  The variable is expected
-  to be declared, otherwise the semantics will get stuck.  At the same time,
- //  the assignment is dissolved. */
 
 //------------Semantics for defining new variables and adds them to state------
  syntax KItem ::= "addId(" Id ")"
@@ -124,6 +157,11 @@ configuration <T color="magenta">
 //---------------------------------Decrement-----------------------------------
   rule <k> roflmao L:Id => . ...</k>
        <state>... L |-> (I => I -Int 1) ...</state>  [increment]
+//-----------------------------------------------------------------------------
+
+//---------------------------------End-----------------------------------------
+ rule <k> stfu ~> _ => stfu ...</k>
+ rule <k> stfu => . </k>
 //-----------------------------------------------------------------------------
 
 //--------------------------------Lookup---------------------------------------
