@@ -1,7 +1,7 @@
 PROJ = omgrofl
 TEST = test.omgrofl
 KOMPILE-FLAGS = ""
-KRUN-FLAGS = 
+KRUN-FLAGS = --output none 
 all: run
 
 run: .changed
