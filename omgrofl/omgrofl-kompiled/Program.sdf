@@ -9,41 +9,41 @@ context-free priorities
 {
     Stmt -> Stmts {}
 } > {
-    Stmts Stmts -> Stmts {left, cons("Stmts1206Syn")}
+    Stmts Stmts -> Stmts {left, cons("Stmts1208Syn")}
 }
 
 context-free start-symbols
 DzString Loop DzBool Stmts Lol Conditional String Int Stmt Assignment Float Bool Id Exp DzInt KItem DzFloat K
 context-free syntax
-    "4" InsertDzExp "iz" InsertDzExp "2lmfao" InsertDzExp InsertDzStmts "brb" -> Stmt {cons("Stmt1243Syn")}
     Assignment -> Exp {}
-    "lulz" Exp -> Stmt {cons("Stmt1308Syn")}
+    "lulz" Exp -> Stmt {cons("Stmt1307Syn")}
     DzString -> String {}
     Exp "to" "/dev/null" -> Stmt {cons("Stmt1380Syn")}
     DzInt -> Int {}
-    "l33t" Id -> Stmt {cons("Stmt1249Syn")}
+    "haxor" Lol -> Stmt {cons("Stmt194Syn")}
     Exp -> Stmt {}
-    "haxor" Id -> Stmt {cons("Stmt1277Syn")}
+    "l33t" Lol -> Stmt {cons("Stmt159Syn")}
     DzFloat -> Float {}
     Bool -> Exp {}
+    "stfw" Lol -> Stmt {cons("Stmt1393Syn")}
     Bool -> Conditional {}
-    "wtf" InsertDzExp InsertDzStmts "brb" -> Stmt {cons("Stmt196Syn")}
-    "tldr" -> Stmt {cons("Stmt1366Syn")}
-    "rtfm" InsertDzStmts "brb" -> Loop {cons("Loop1394Syn")}
-    Exp "iz" Exp -> Assignment {cons("Assignment127Syn")}
+    "wtf" InsertDzExp InsertDzStmts "brb" -> Stmt {cons("Stmt198Syn")}
+    "tldr" -> Stmt {cons("Stmt1365Syn")}
+    "rtfm" InsertDzStmts "brb" -> Loop {cons("Loop1395Syn")}
+    Exp "iz" Exp -> Assignment {cons("Assignment128Syn")}
+    "4thelulz" InsertDzExp "iz" InsertDzExp "2lmfao" InsertDzExp InsertDzStmts "brb" -> Stmt {cons("Stmt1333Syn")}
     Loop -> Stmt {}
     DzBool -> Bool {}
-    Id -> Exp {}
-    "stfw" Id -> Stmt {cons("Stmt132Syn")}
+    Lol -> Exp {}
     Int -> Exp {}
-    Exp "nope" "iz" "liek" Exp -> Conditional {cons("Conditional168Syn")}
-    "lmao" Exp -> Stmt {cons("Stmt1342Syn")}
-    "rofl" Exp -> Stmt {cons("Stmt173Syn")}
+    Exp "nope" "iz" "liek" Exp -> Conditional {cons("Conditional169Syn")}
+    "lmao" Exp -> Stmt {cons("Stmt1340Syn")}
+    "rofl" Exp -> Stmt {cons("Stmt174Syn")}
     Exp "nope" "iz" "uber" Exp -> Conditional {cons("Conditional136Syn")}
     "newline" -> KItem {cons("KItem137Syn")}
     Conditional -> Exp {}
-    Exp "iz" "uber" Exp -> Conditional {cons("Conditional178Syn")}
-    "n00b" Exp -> Stmt {cons("Stmt1347Syn")}
+    Exp "iz" "uber" Exp -> Conditional {cons("Conditional179Syn")}
+    "n00b" Exp -> Stmt {cons("Stmt1346Syn")}
     "stfu" -> Stmt {cons("Stmt1267Syn")}
     Exp "iz" "liek" Exp -> Conditional {cons("Conditional152Syn")}
     Stmts -> InsertDzStmts
@@ -135,15 +135,13 @@ lexical syntax
     "to" -> IdDz {reject}
     "rtfm" -> IdDz {reject}
     [\-\+]? [0-9]+ -> DzIntDz
-    "4" -> DzIntDz {reject}
     [\+\-]?[0-9]+"."[0-9]+([eE][\+\-]?[0-9]+)?([fFdD]|([pP][0-9]+[xX][0-9]+))? -> DzFloatDz
-    "4" -> DzFloatDz {reject}
     [\+\-]?"Infinity"([fFdD]|([pP][0-9]+[xX][0-9]+))? -> DzFloatDz
     "Infinity" -> DzFloatDz {reject}
     "NaN"([fFdD]|([pP][0-9]+[xX][0-9]+))? -> DzFloatDz
     "NaN" -> DzFloatDz {reject}
     "\"" ((~[\"\n\r\\]) | (((([\\][nrtf\"\\]) | ([\\][x][0-9a-fA-F][0-9a-fA-F])) | ([\\][u][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F])) | ([\\][U][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F])))* "\"" -> DzStringDz
-    [a-z][a-zA-Z0-9\_]* -> LolDz
+    [lL][oO]*[lL] -> LolDz
     "stfw" -> LolDz {reject}
     "nope" -> LolDz {reject}
     "n00b" -> LolDz {reject}
@@ -155,6 +153,7 @@ lexical syntax
     "l33t" -> LolDz {reject}
     "NaN" -> LolDz {reject}
     "lmao" -> LolDz {reject}
+    "4thelulz" -> LolDz {reject}
     "Infinity" -> LolDz {reject}
     "lulz" -> LolDz {reject}
     "haxor" -> LolDz {reject}
@@ -163,7 +162,6 @@ lexical syntax
     "tldr" -> LolDz {reject}
     "iz" -> LolDz {reject}
     "/dev/null" -> LolDz {reject}
-    "4" -> LolDz {reject}
     "2lmfao" -> LolDz {reject}
     "rofl" -> LolDz {reject}
     "true" -> LolDz {reject}
@@ -180,4 +178,3 @@ context-free syntax
 context-free restrictions
     Id -/- [A-Za-z0-9\_]
     DzInt -/-  [0-9]
-    Lol -/- [a-zA-Z0-9\_]

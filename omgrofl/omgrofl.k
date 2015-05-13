@@ -17,7 +17,7 @@ This module defines the syntax of OmgRofl\@.
 The Semantic Constructs are as follows 
 wtf condition – is a conditional statement (like if in C).
 rtfm – begins a loop.
-4 variable iz initial-value 2 end-value - begins a "for" loop.
+4thelulz variable iz initial-value 2 end-value - begins a "for" loop.
 stfw x – reads a value into x. A byte character is read from standard input, 
 and its value is stored into x, like in brainfuck.
 rofl x – prints out the value of x as a byte character. Also like in brainfuck.
@@ -37,14 +37,14 @@ lulz x – decrements value of x by one.
  syntax Stmt ::= Exp
                | "lmao" Exp
                | "lulz" Exp             
-               | "stfw" Id                                  [read]
+               | "stfw" Lol                                  [read]
                | "wtf" Exp Stmts "brb"                      [strict(1)]
-               | "4" Exp "iz" Exp "2lmfao" Exp Stmts "brb"  [strict(3)]
+               | "4thelulz" Exp "iz" Exp "2lmfao" Exp Stmts "brb"  [strict(3)]
                | Loop
                | "tldr"
                | "n00b" Exp                                 [strict]             
-               | "l33t" Id                
-               | "haxor" Id  
+               | "l33t" Lol                
+               | "haxor" Lol  
                | "stfu" 
                | Exp "to" "/dev/null"
                | "rofl" Exp                                 [print]                      
@@ -54,7 +54,7 @@ lulz x – decrements value of x by one.
  syntax Assignment ::= Exp "iz" Exp                         [strict(2)]
 
  syntax Exp ::= Int 
-              | Id 
+              | Lol 
               | Bool
               | Conditional
               | Assignment
@@ -70,7 +70,7 @@ lulz x – decrements value of x by one.
                 > Stmts  Stmts                              [left]
 
  //Need to rework regex to only take lo*l
- syntax Lol ::= Token{[a-z][a-zA-Z0-9\_]*}                  [variable, onlyLabel, autoReject, token]
+ syntax Lol ::= Token{[lL][oO]*[lL]}                  [token]
 
  syntax KItem ::= "newline" 
 
@@ -112,28 +112,28 @@ configuration <T color="magenta">
 
 
 //------------Semantics for defining new variables and adds them to state------
- syntax KItem ::= "addId(" Id ")"
+ syntax KItem ::= "addId(" Lol ")"
 
- rule <k> addId(X:Id) => . ...</k>
+ rule <k> addId(X:Lol) => . ...</k>
   <state>... (.Map => X|->0) ...</state>
 
- syntax KItem ::= "addIdValue""(" Id "," Exp ")" [strict(2)]
+ syntax KItem ::= "addIdValue""(" Lol "," Exp ")" [strict(2)]
 
- rule <k> addIdValue(X:Id, I:Int) => . ...</k>
+ rule <k> addIdValue(X:Lol, I:Int) => . ...</k>
  <state>... X |-> (_ => I) ...</state>
 
- rule <k> (X:Id iz I:Id) => addId(X) ~> addIdValue(X, I) ...</k>
+ rule <k> (X:Lol iz I:Lol) => addId(X) ~> addIdValue(X, I) ...</k>
       <state> Rho </state>  when notBool(X in keys(Rho))
 
- rule <k> (X:Id iz I:Int) => addId(X) ~> addIdValue(X, I) ...</k>
+ rule <k> (X:Lol iz I:Int) => addId(X) ~> addIdValue(X, I) ...</k>
       <state> Rho </state>  when notBool(X in keys(Rho))
- rule <k> (X:Id iz I:Int) => addIdValue(X, I) ...</k>
+ rule <k> (X:Lol iz I:Int) => addIdValue(X, I) ...</k>
       <state> Rho </state>  when X in keys(Rho)
 //-----------------------------------------------------------------------------
 
 //------------------------------For Loop---------------------------------------
   syntax KItem ::= "while" "(" Exp "nope" "iz" "liek" Exp ")" "{" Stmts "}"
-  rule <k> 4 E1:Exp iz E2:Exp 2lmfao I:Int S:Stmts brb =>
+  rule <k> 4thelulz E1:Exp iz E2:Exp 2lmfao I:Int S:Stmts brb =>
           E1 iz E2 ~> while(E1 nope iz liek I){S} ...</k>
 
   rule <k> while(V1:Exp nope iz liek V2:Exp) {S} 
@@ -153,12 +153,12 @@ configuration <T color="magenta">
 //-----------------------------------------------------------------------------
 
 //---------------------------------Increment-----------------------------------
-  rule <k> lmao L:Id => . ...</k>
+  rule <k> lmao L:Lol => . ...</k>
        <state>... L |-> (I => I +Int 1) ...</state>         [increment]
 //-----------------------------------------------------------------------------
 
 //---------------------------------Decrement-----------------------------------
-  rule <k> lulz L:Id => . ...</k>
+  rule <k> lulz L:Lol => . ...</k>
        <state>... L |-> (I => I -Int 1) ...</state>         [increment]
 //-----------------------------------------------------------------------------
 
@@ -168,7 +168,7 @@ configuration <T color="magenta">
 //-----------------------------------------------------------------------------
 
 //--------------------------------Lookup---------------------------------------
-  rule <k> X:Id => V ...</k>
+  rule <k> X:Lol => V ...</k>
        <state>... X |-> V:Val ...</state>                   [lookup]
 //-----------------------------------------------------------------------------
 
@@ -176,22 +176,22 @@ configuration <T color="magenta">
   rule <k> n00b E:Int => . ...</k>
        <stack> .List => ListItem(E) ...</stack>
 
-  rule <k> l33t X:Id => addId(X) ~> addIdValue(X, E:Int) ...</k>
+  rule <k> l33t X:Lol => addId(X) ~> addIdValue(X, E:Int) ...</k>
        <stack> ListItem(E) => .List ...</stack>
        <state> Rho </state>
        when notBool(X in keys(Rho))
 
-  rule <k> l33t X:Id => addIdValue(X, E:Int) ...</k>
+  rule <k> l33t X:Lol => addIdValue(X, E:Int) ...</k>
        <stack> ListItem(E) => .List ...</stack>
        <state> Rho </state>
        when X in keys(Rho)
 
-  rule <k> haxor X:Id => addId(X) ~> addIdValue(X, E) ...</k>
+  rule <k> haxor X:Lol => addId(X) ~> addIdValue(X, E) ...</k>
        <stack>... ListItem(E) => .List </stack>
        <state> Rho </state>
        when notBool(X in keys(Rho))
 
-  rule <k> haxor X:Id => addIdValue(X, E) ...</k>
+  rule <k> haxor X:Lol => addIdValue(X, E) ...</k>
        <stack>... ListItem(E) => .List </stack>
        <state> Rho </state>
        when X in keys(Rho)
@@ -207,13 +207,13 @@ configuration <T color="magenta">
 //-----------------------------------------------------------------------------
 
 //----------------------------------IO-----------------------------------------
- rule <k> rofl X:Id => . ...</k>
+ rule <k> rofl X:Lol => . ...</k>
       <state>... X |-> I:Int ...</state>
       <out>... .List => ListItem(chrChar(I:Int)) </out>
  rule <k> rofl X:Int => . ...</k>
       <out>... .List => ListItem(chrChar(X:Int)) </out>
 
- rule <k> stfw X:Id => addId(X) ~> addIdValue(X, In) ...</k>
+ rule <k> stfw X:Lol => addId(X) ~> addIdValue(X, In) ...</k>
       <in> ListItem(In:Int) => .List ...</in> 
 //-----------------------------------------------------------------------------
 
